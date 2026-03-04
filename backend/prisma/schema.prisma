@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  password     String
+  plan         Plan      @default(FREE)
+  businessType String?
+  taxRegime    String?
+  onboarded    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  products     Product[]
+  businessProfile BusinessProfile?
+}
+
+model BusinessProfile {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Custos Fixos Mensais
+  monthlyRent           Float    @default(0)  // Aluguel/Sede
+  ownerSalary           Float    @default(0)  // Pró-labore
+  employeesCost         Float    @default(0)  // Funcionários (folha total)
+  utilitiesCost         Float    @default(0)  // Energia, água, internet
+  accountingCost        Float    @default(0)  // Contador
+  systemsCost           Float    @default(0)  // Sistemas, softwares, assinaturas
+  marketingCost         Float    @default(0)  // Marketing fixo mensal
+  otherFixedCosts       Float    @default(0)  // Outros custos fixos
+  
+  // Faturamento previsto
+  expectedMonthlyRevenue Float   @default(0)  // Faturamento total previsto/mês
+  
+  // Modo de precificação
+  pricingMode           PricingMode @default(SIMPLE)
+  
+  // Calculado automaticamente
+  fixedCostPercentage   Float    @default(0)  // CF% calculado
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+enum PricingMode {
+  SIMPLE    // Modo Simples — CF% via faturamento previsto (recomendado)
+  ADVANCED  // Modo Avançado — usuário define CF% manualmente por produto
+}
+
+enum Plan {
+  FREE
+  PRO
+  BUSINESS
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name            String
+  category        String?
+  productionCost  Float    @default(0)
+  laborCost       Float    @default(0)
+  packagingCost   Float    @default(0)
+  shippingCost    Float    @default(0)
+  expectedVolume  Int      @default(100)
+  cardFee         Float    @default(0)
+  commission      Float    @default(0)
+  marketplaceFee  Float    @default(0)
+  taxRate         Float    @default(0)
+  desiredMargin   Float    @default(20)
+  maxDiscount     Float    @default(10)
+  competitorPrice Float?
+  suggestedPrice  Float?
+  currentPrice    Float?
+  netMargin       Float?
+  breakEven       Int?
+  healthScore     Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

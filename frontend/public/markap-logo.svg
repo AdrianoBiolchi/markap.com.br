@@ -1,0 +1,12 @@
+<svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ícone -->
+  <rect width="40" height="40" rx="10" fill="#ECFDF5"/>
+  <rect x="6" y="23" width="5" height="10" rx="1.5" fill="#A7F3D0"/>
+  <rect x="14" y="17" width="5" height="16" rx="1.5" fill="#34D399"/>
+  <rect x="22" y="10" width="5" height="23" rx="1.5" fill="#1A6B4A"/>
+  <path d="M29 12 L34 7 M34 7 L34 12 M34 7 L29 7" stroke="#1A6B4A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Wordmark -->
+  <text x="50" y="27" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="22" fill="#1A1A2E" letter-spacing="-0.5">Mark</text>
+  <text x="102" y="27" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="22" fill="#1A6B4A" letter-spacing="-0.5">ap</text>
+</svg>
