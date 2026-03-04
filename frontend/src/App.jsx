@@ -8,6 +8,7 @@ import Analysis from './pages/Analysis';
 import Upgrade from './pages/Upgrade';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Landing from './pages/Landing';
 import BusinessProfile from './pages/BusinessProfile';
 import { cn } from './lib/utils';
 
@@ -16,14 +17,14 @@ export default function App() {
   const location = useLocation();
 
   // Navigation Logic
-  const publicPaths = ['/login', '/register'];
+  const publicPaths = ['/login', '/register', '/'];
   const isPublicPath = publicPaths.includes(location.pathname);
 
   if (!isAuth && !isPublicPath) {
     return <Navigate to="/login" replace />;
   }
 
-  if (isAuth && isPublicPath) {
+  if (isAuth && (location.pathname === '/login' || location.pathname === '/register')) {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -32,7 +33,7 @@ export default function App() {
   }
 
   // Sidebar visibility
-  const hideSidebarPaths = ['/onboarding', '/login', '/register'];
+  const hideSidebarPaths = ['/onboarding', '/login', '/register', '/'];
   const showSidebar = isAuth && hasCompletedOnboarding && !hideSidebarPaths.includes(location.pathname);
 
   return (
@@ -43,6 +44,7 @@ export default function App() {
         showSidebar ? 'pl-64' : ''
       )}>
         <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/onboarding" element={<Onboarding />} />
@@ -54,8 +56,7 @@ export default function App() {
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/business-profile" element={<BusinessProfile />} />
 
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to={isAuth ? "/dashboard" : "/"} replace />} />
         </Routes>
       </main>
     </div>
