@@ -29,17 +29,16 @@
     display: flex;
     flex-direction: column;
   }
+
+  #root {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 @layer components {
   .card-premium {
     @apply bg-surface border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200;
   }
-}
-
-#root {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-
 }

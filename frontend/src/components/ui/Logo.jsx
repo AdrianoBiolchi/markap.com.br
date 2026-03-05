@@ -1,21 +1,23 @@
 import React from 'react';
 
-export const Logo = ({ className }) => {
+export const Logo = ({ className, ...props }) => {
     return (
-        <svg className={className} width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className={className} width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
             {/* Ícone */}
-            <rect width="40" height="40" rx="10" fill="#ECFDF5" />
-            <rect x="6" y="23" width="5" height="10" rx="1.5" fill="#A7F3D0" />
-            <rect x="14" y="17" width="5" height="16" rx="1.5" fill="#34D399" />
-            <rect x="22" y="10" width="5" height="23" rx="1.5" fill="#1A6B4A" />
-            <path d="M29 12 L34 7 M34 7 L34 12 M34 7 L29 7" stroke="#1A6B4A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <rect width="40" height="40" rx="10" fill="currentColor" fillOpacity="0.1" />
+            <rect x="6" y="23" width="5" height="10" rx="1.5" fill="currentColor" fillOpacity="0.3" />
+            <rect x="14" y="17" width="5" height="16" rx="1.5" fill="currentColor" fillOpacity="0.6" />
+            <rect x="22" y="10" width="5" height="23" rx="1.5" fill="currentColor" />
+            <path d="M29 12 L34 7 M34 7 L34 12 M34 7 L29 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
 
             {/* Wordmark */}
-            <text x="50" y="27" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="22" fill="#1A1A2E" letterSpacing="-0.5">Mark</text>
-            <text x="102" y="27" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="22" fill="#1A6B4A" letterSpacing="-0.5">ap</text>
+            <text x="50" y="27" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="22" fill="currentColor" letterSpacing="-0.5">Mark</text>
+            <text x="102" y="27" fontFamily="Georgia, 'Times New Roman', serif" fontWeight="700" fontSize="22" fill="currentColor" letterSpacing="-0.5">ap</text>
         </svg>
     );
 };
+
+
 
 export const Icon = ({ className }) => {
     return (

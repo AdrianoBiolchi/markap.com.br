@@ -1,29 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle2, TrendingUp, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Zap, TrendingUp, ShieldCheck } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
-import Button from '../components/ui/Button';
-import Input from '../components/ui/Input';
 import { Logo } from '../components/ui/Logo';
-
-const FEATURES = [
-    { icon: <Zap className="w-4 h-4" />, text: 'Preço ideal calculado em 3 minutos' },
-    { icon: <TrendingUp className="w-4 h-4" />, text: 'Diagnóstico de margem com IA' },
-    { icon: <ShieldCheck className="w-4 h-4" />, text: 'Metodologia SEBRAE, sem erro de cálculo' },
-];
-
-const TESTIMONIAL = {
-    quote: 'Descobri que vendia com margem de 3%. No primeiro mês recuperei R$1.200.',
-    name: 'Marina C.',
-    role: 'Artesã de bolsas · SP',
-    initials: 'MC',
-};
-
-const STATS = [
-    { value: '+2.400', label: 'Empresários' },
-    { value: 'R$890k', label: 'Recuperados' },
-    { value: '4.8 ★', label: 'Avaliação' },
-];
 
 export default function Register() {
     const [name, setName] = useState('');
@@ -39,214 +18,246 @@ export default function Register() {
     };
 
     return (
-        <div style={{ position: 'fixed', inset: 0, display: 'flex', overflow: 'auto' }}>
+        <div style={{
+            minHeight: '100vh',
+            width: '100%',
+            display: 'flex',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
 
-            {/* ── LEFT PANEL ── */}
-            <div className="hidden lg:flex lg:w-[52%] bg-[#1A5C3A] flex-col justify-between p-12 relative overflow-hidden">
-
-                {/* Background texture */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white/[0.03] -translate-y-1/2 translate-x-1/3" />
-                    <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-white/[0.04] translate-y-1/3 -translate-x-1/4" />
-                    <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] rounded-full bg-white/[0.02] -translate-x-1/2 -translate-y-1/2" />
-                    {/* Grid pattern */}
-                    <div
-                        className="absolute inset-0 opacity-[0.04]"
-                        style={{
-                            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-                            backgroundSize: '48px 48px',
-                        }}
-                    />
-                </div>
+            {/* PAINEL ESQUERDO */}
+            <div style={{
+                width: '52%',
+                flexShrink: 0,
+                background: '#1A5C3A',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                padding: '48px',
+                position: 'relative',
+                overflow: 'hidden',
+            }}>
+                {/* Grid pattern */}
+                <div style={{
+                    position: 'absolute', inset: 0, pointerEvents: 'none',
+                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+                    backgroundSize: '48px 48px',
+                }} />
+                {/* Glow orbs */}
+                <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(rgba(255,255,255,0.06), transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: '-80px', left: '-80px', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(rgba(255,255,255,0.04), transparent 70%)', pointerEvents: 'none' }} />
 
                 {/* Logo */}
-                <div className="relative z-10">
-                    <Link to="/">
-                        <Logo className="w-36 h-9 brightness-0 invert" />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                    <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+                        <Logo style={{ color: 'white', height: '32px', width: 'auto' }} />
                     </Link>
                 </div>
 
-                {/* Center content */}
-                <div className="relative z-10 space-y-10">
-                    <div className="space-y-4">
-                        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#FFF176] animate-pulse" />
-                            <span className="text-white/80 text-xs font-semibold tracking-wide uppercase">Grátis para começar</span>
-                        </div>
-                        <h2
-                            className="text-white leading-[0.97] tracking-tight"
-                            style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(36px, 3.5vw, 52px)', fontWeight: 900 }}
-                        >
+                {/* Conteúdo central */}
+                <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '36px' }}>
+
+                    {/* Badge */}
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '100px', padding: '6px 14px', width: 'fit-content' }}>
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#FFF176' }} />
+                        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Grátis para começar</span>
+                    </div>
+
+                    {/* Headline */}
+                    <div>
+                        <h2 style={{
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: 'clamp(36px, 3.5vw, 52px)',
+                            fontWeight: 900,
+                            lineHeight: 0.97,
+                            letterSpacing: '-0.03em',
+                            color: '#FFFFFF',
+                            margin: 0,
+                        }}>
                             Seu preço está certo<br />
                             ou te custando<br />
-                            <em className="text-[#FFF176]">dinheiro?</em>
+                            <em style={{ fontStyle: 'italic', color: '#FFF176' }}>dinheiro?</em>
                         </h2>
-                        <p className="text-white/60 text-base leading-relaxed max-w-sm">
+                        <p style={{ marginTop: '16px', color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: 1.65, maxWidth: '380px' }}>
                             Descubra em 3 minutos. Sem cartão de crédito.
                         </p>
                     </div>
 
                     {/* Features */}
-                    <div className="space-y-3">
-                        {FEATURES.map((f, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                                <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center text-[#FFF176] flex-shrink-0">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        {[
+                            { icon: '⚡', text: 'Preço ideal calculado em 3 minutos' },
+                            { icon: '📈', text: 'Diagnóstico de margem com IA' },
+                            { icon: '🛡️', text: 'Metodologia SEBRAE, sem erro de cálculo' },
+                        ].map((f, i) => (
+                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '15px', flexShrink: 0 }}>
                                     {f.icon}
                                 </div>
-                                <span className="text-white/80 text-sm">{f.text}</span>
+                                <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>{f.text}</span>
                             </div>
                         ))}
                     </div>
 
-                    {/* Testimonial */}
-                    <div className="bg-white/[0.07] border border-white/10 rounded-2xl p-5 space-y-3">
-                        <div className="flex gap-0.5">
-                            {[...Array(5)].map((_, i) => <span key={i} className="text-[#EAB308] text-sm">★</span>)}
+                    {/* Depoimento */}
+                    <div style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '20px 24px' }}>
+                        <div style={{ display: 'flex', gap: '2px', marginBottom: '12px' }}>
+                            {[...Array(5)].map((_, i) => <span key={i} style={{ color: '#EAB308', fontSize: '13px' }}>★</span>)}
                         </div>
-                        <p className="text-white/80 text-sm leading-relaxed italic">"{TESTIMONIAL.quote}"</p>
-                        <div className="flex items-center gap-2 pt-1">
-                            <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">
-                                {TESTIMONIAL.initials}
-                            </div>
+                        <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px', lineHeight: 1.65, fontStyle: 'italic', marginBottom: '16px' }}>
+                            "Descobri que vendia com margem de 3%. No primeiro mês recuperei R$1.200."
+                        </p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '11px', fontWeight: 800 }}>MC</div>
                             <div>
-                                <div className="text-white text-xs font-bold">{TESTIMONIAL.name}</div>
-                                <div className="text-white/50 text-xs">{TESTIMONIAL.role}</div>
+                                <div style={{ color: '#fff', fontSize: '13px', fontWeight: 700 }}>Marina C.</div>
+                                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px' }}>Artesã de bolsas · SP</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Stats bottom */}
-                <div className="relative z-10 grid grid-cols-3 gap-4 border-t border-white/10 pt-8">
-                    {STATS.map((s, i) => (
+                {/* Stats rodapé */}
+                <div style={{ position: 'relative', zIndex: 1, borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '28px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                    {[
+                        { v: '+2.400', l: 'Empresários' },
+                        { v: 'R$890k', l: 'Recuperados' },
+                        { v: '4.8 ★', l: 'Avaliação' },
+                    ].map((s, i) => (
                         <div key={i}>
-                            <div
-                                className="text-white leading-none mb-1"
-                                style={{ fontFamily: "'DM Mono', monospace", fontSize: '22px', letterSpacing: '-0.04em' }}
-                            >
-                                {s.value}
-                            </div>
-                            <div className="text-white/40 text-xs">{s.label}</div>
+                            <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '22px', letterSpacing: '-0.04em', color: '#fff', lineHeight: 1, marginBottom: '4px' }}>{s.v}</div>
+                            <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)' }}>{s.l}</div>
                         </div>
                     ))}
                 </div>
             </div>
 
-            {/* ── RIGHT PANEL ── */}
-            <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-16 bg-white">
-
-                {/* Mobile logo */}
-                <div className="lg:hidden mb-8">
-                    <Link to="/"><Logo className="w-32 h-8" /></Link>
-                </div>
-
-                <div className="w-full max-w-md space-y-8">
+            <div style={{
+                flex: 1,
+                alignSelf: 'stretch',
+                height: '100vh',
+                background: '#FFFFFF',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '64px 48px',
+            }}>
+                <div style={{ width: '100%', maxWidth: '420px' }}>
 
                     {/* Header */}
-                    <div className="space-y-1.5">
-                        <h1
-                            className="text-[#0F0E0C] leading-tight tracking-tight"
-                            style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(28px, 3vw, 38px)', fontWeight: 900 }}
-                        >
+                    <div style={{ marginBottom: '36px' }}>
+                        <h1 style={{
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: 'clamp(28px, 3vw, 40px)',
+                            fontWeight: 900,
+                            letterSpacing: '-0.035em',
+                            color: '#0F0E0C',
+                            lineHeight: 1.05,
+                            marginBottom: '10px',
+                        }}>
                             Criar conta grátis
                         </h1>
-                        <p className="text-[rgba(15,14,12,0.5)] text-sm">
+                        <p style={{ fontSize: '14px', color: 'rgba(15,14,12,0.5)', margin: 0 }}>
                             Já tem uma conta?{' '}
-                            <Link to="/login" className="text-[#1A5C3A] font-bold hover:underline">
+                            <Link to="/login" style={{ color: '#1A5C3A', fontWeight: 700, textDecoration: 'none' }}>
                                 Fazer login
                             </Link>
                         </p>
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-1">
-                            <label className="block text-xs font-semibold text-[rgba(15,14,12,0.5)] uppercase tracking-wide">
-                                Nome completo
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Seu nome ou da empresa"
-                                required
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="w-full bg-[#F7F7F7] border border-[rgba(15,14,12,0.1)] rounded-xl px-4 py-3 text-[#0F0E0C] text-sm placeholder:text-[rgba(15,14,12,0.3)] outline-none transition-all focus:border-[#1A5C3A] focus:bg-white focus:ring-3 focus:ring-[rgba(26,92,58,0.08)]"
-                            />
-                        </div>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
-                        <div className="space-y-1">
-                            <label className="block text-xs font-semibold text-[rgba(15,14,12,0.5)] uppercase tracking-wide">
-                                E-mail
-                            </label>
-                            <input
-                                type="email"
-                                placeholder="seu@email.com"
-                                required
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-[#F7F7F7] border border-[rgba(15,14,12,0.1)] rounded-xl px-4 py-3 text-[#0F0E0C] text-sm placeholder:text-[rgba(15,14,12,0.3)] outline-none transition-all focus:border-[#1A5C3A] focus:bg-white focus:ring-3 focus:ring-[rgba(26,92,58,0.08)]"
-                            />
-                        </div>
-
-                        <div className="space-y-1">
-                            <label className="block text-xs font-semibold text-[rgba(15,14,12,0.5)] uppercase tracking-wide">
-                                Senha
-                            </label>
-                            <input
-                                type="password"
-                                placeholder="Mínimo 8 caracteres"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-[#F7F7F7] border border-[rgba(15,14,12,0.1)] rounded-xl px-4 py-3 text-[#0F0E0C] text-sm placeholder:text-[rgba(15,14,12,0.3)] outline-none transition-all focus:border-[#1A5C3A] focus:bg-white focus:ring-3 focus:ring-[rgba(26,92,58,0.08)]"
-                            />
-                        </div>
+                        {/* Campo */}
+                        {[
+                            { label: 'Nome completo', id: 'name', type: 'text', placeholder: 'Seu nome ou da empresa', value: name, onChange: (e) => setName(e.target.value) },
+                            { label: 'E-mail', id: 'email', type: 'email', placeholder: 'seu@email.com', value: email, onChange: (e) => setEmail(e.target.value) },
+                            { label: 'Senha', id: 'password', type: 'password', placeholder: 'Mínimo 8 caracteres', value: password, onChange: (e) => setPassword(e.target.value) },
+                        ].map((f) => (
+                            <div key={f.id} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                <label htmlFor={f.id} style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(15,14,12,0.45)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                                    {f.label}
+                                </label>
+                                <input
+                                    id={f.id}
+                                    type={f.type}
+                                    placeholder={f.placeholder}
+                                    required
+                                    value={f.value}
+                                    onChange={f.onChange}
+                                    style={{
+                                        width: '100%',
+                                        background: '#F7F7F7',
+                                        border: '1.5px solid rgba(15,14,12,0.1)',
+                                        borderRadius: '10px',
+                                        padding: '12px 16px',
+                                        fontSize: '14px',
+                                        color: '#0F0E0C',
+                                        outline: 'none',
+                                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                                        boxSizing: 'border-box',
+                                        transition: 'border-color 0.15s, background 0.15s',
+                                    }}
+                                    onFocus={(e) => { e.target.style.borderColor = '#1A5C3A'; e.target.style.background = '#fff'; }}
+                                    onBlur={(e) => { e.target.style.borderColor = 'rgba(15,14,12,0.1)'; e.target.style.background = '#F7F7F7'; }}
+                                />
+                            </div>
+                        ))}
 
                         {/* Micro-benefits */}
-                        <div className="flex flex-col gap-2 py-1">
-                            {[
-                                'Plano Free incluído — até 5 produtos',
-                                'Sem cartão de crédito necessário',
-                            ].map((t, i) => (
-                                <div key={i} className="flex items-center gap-2 text-xs text-[rgba(15,14,12,0.5)]">
-                                    <CheckCircle2 className="w-3.5 h-3.5 text-[#22C55E] flex-shrink-0" />
-                                    {t}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            {['Plano Free incluído — até 5 produtos', 'Sem cartão de crédito necessário'].map((t, i) => (
+                                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ color: '#22C55E', fontSize: '15px' }}>✓</span>
+                                    <span style={{ fontSize: '13px', color: 'rgba(15,14,12,0.5)' }}>{t}</span>
                                 </div>
                             ))}
                         </div>
 
+                        {/* Erro */}
                         {error && (
-                            <div className="p-3 bg-red-50 text-red-600 text-sm font-medium rounded-xl border border-red-200">
+                            <div style={{ padding: '12px 16px', background: '#FFF0F0', border: '1px solid rgba(220,38,38,0.2)', borderRadius: '10px', color: '#DC2626', fontSize: '13px', fontWeight: 500 }}>
                                 {error}
                             </div>
                         )}
 
+                        {/* Botão */}
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full h-12 bg-[#1A5C3A] hover:bg-[#2E7D52] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[rgba(26,92,58,0.25)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            style={{
+                                width: '100%',
+                                height: '52px',
+                                background: isLoading ? '#2E7D52' : '#1A5C3A',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '10px',
+                                fontSize: '15px',
+                                fontWeight: 700,
+                                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                                cursor: isLoading ? 'not-allowed' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                transition: 'all 0.2s',
+                                opacity: isLoading ? 0.7 : 1,
+                                boxShadow: '0 4px 20px rgba(26,92,58,0.25)',
+                            }}
+                            onMouseEnter={(e) => { if (!isLoading) { e.target.style.background = '#2E7D52'; e.target.style.transform = 'translateY(-1px)'; e.target.style.boxShadow = '0 8px 28px rgba(26,92,58,0.3)'; } }}
+                            onMouseLeave={(e) => { e.target.style.background = '#1A5C3A'; e.target.style.transform = 'none'; e.target.style.boxShadow = '0 4px 20px rgba(26,92,58,0.25)'; }}
                         >
-                            {isLoading ? (
-                                <span className="flex items-center gap-2">
-                                    <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                                    </svg>
-                                    Criando conta...
-                                </span>
-                            ) : (
-                                <>Começar agora <ArrowRight className="w-4 h-4" /></>
-                            )}
+                            {isLoading ? 'Criando conta...' : <>Começar agora <ArrowRight size={16} /></>}
                         </button>
                     </form>
 
                     {/* Footer */}
-                    <p className="text-center text-xs text-[rgba(15,14,12,0.3)]">
+                    <p style={{ marginTop: '24px', textAlign: 'center', fontSize: '12px', color: 'rgba(15,14,12,0.3)', lineHeight: 1.6 }}>
                         Ao criar uma conta você concorda com nossos{' '}
-                        <Link to="/terms" className="underline hover:text-[#1A5C3A]">Termos</Link>
+                        <Link to="/terms" style={{ color: 'rgba(15,14,12,0.4)', textDecoration: 'underline' }}>Termos</Link>
                         {' '}e{' '}
-                        <Link to="/privacy" className="underline hover:text-[#1A5C3A]">Privacidade</Link>
+                        <Link to="/privacy" style={{ color: 'rgba(15,14,12,0.4)', textDecoration: 'underline' }}>Privacidade</Link>
                     </p>
                 </div>
             </div>

@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ArrowRight, TrendingUp, BarChart3, AlertTriangle } from 'lucide-react';
+import { ArrowRight, BarChart3, AlertTriangle } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { Logo } from '../components/ui/Logo';
 
-// Mini dashboard preview data
 const PREVIEW_ITEMS = [
     { name: 'Bolsa de Couro', price: 'R$179,42', margin: '22%', status: 'ok' },
     { name: 'Camiseta Slim', price: 'R$89,90', margin: '8%', status: 'warn' },
     { name: 'Calça Jeans', price: 'R$145,00', margin: '-3%', status: 'bad' },
 ];
 
-const STATUS_COLORS = {
-    ok: { bg: 'bg-[#DCFCE7]', text: 'text-[#1A5C3A]' },
-    warn: { bg: 'bg-[#FFF176]', text: 'text-[#92400E]' },
-    bad: { bg: 'bg-[#FFF0F0]', text: 'text-[#DC2626]' },
+const STATUS = {
+    ok: { bg: '#DCFCE7', color: '#1A5C3A' },
+    warn: { bg: '#FFF176', color: '#92400E' },
+    bad: { bg: '#FFF0F0', color: '#DC2626' },
 };
 
 export default function Login() {
@@ -30,178 +29,195 @@ export default function Login() {
     };
 
     return (
-        <div style={{ position: 'fixed', inset: 0, display: 'flex', overflow: 'auto' }}>
+        <div style={{
+            minHeight: '100vh',
+            width: '100%',
+            display: 'flex',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+        }}>
 
-            {/* ── LEFT PANEL ── */}
-            <div className="hidden lg:flex lg:w-[52%] bg-[#1A5C3A] flex-col justify-between p-12 relative overflow-hidden">
-
-                {/* Background texture */}
-                <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-white/[0.03] -translate-y-1/2 translate-x-1/3" />
-                    <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-white/[0.04] translate-y-1/3 -translate-x-1/4" />
-                    <div
-                        className="absolute inset-0 opacity-[0.04]"
-                        style={{
-                            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-                            backgroundSize: '48px 48px',
-                        }}
-                    />
-                </div>
+            {/* PAINEL ESQUERDO */}
+            <div style={{
+                width: '52%',
+                flexShrink: 0,
+                background: '#1A5C3A',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                padding: '48px',
+                position: 'relative',
+                overflow: 'hidden',
+            }}>
+                {/* Grid pattern */}
+                <div style={{
+                    position: 'absolute', inset: 0, pointerEvents: 'none',
+                    backgroundImage: 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+                    backgroundSize: '48px 48px',
+                }} />
+                <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(rgba(255,255,255,0.06), transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', bottom: '-80px', left: '-80px', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(rgba(255,255,255,0.04), transparent 70%)', pointerEvents: 'none' }} />
 
                 {/* Logo */}
-                <div className="relative z-10">
-                    <Link to="/">
-                        <Logo className="w-36 h-9 brightness-0 invert" />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                    <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+                        <Logo style={{ color: 'white', height: '32px', width: 'auto' }} />
                     </Link>
                 </div>
 
-                {/* Center: mini dashboard preview */}
-                <div className="relative z-10 space-y-6">
-                    <div className="space-y-3">
-                        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" />
-                            <span className="text-white/80 text-xs font-semibold tracking-wide uppercase">Painel ao vivo</span>
-                        </div>
-                        <h2
-                            className="text-white leading-[0.97] tracking-tight"
-                            style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(32px, 3vw, 46px)', fontWeight: 900 }}
-                        >
-                            Bem-vindo de volta.<br />
-                            <em className="text-[#FFF176]">Seus números esperam.</em>
-                        </h2>
+                {/* Conteúdo central */}
+                <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '28px' }}>
+
+                    {/* Badge */}
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '100px', padding: '6px 14px', width: 'fit-content' }}>
+                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22C55E' }} />
+                        <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Painel ao vivo</span>
                     </div>
 
-                    {/* Mini product list */}
-                    <div className="bg-white/[0.07] border border-white/10 rounded-2xl overflow-hidden">
-                        {/* Header */}
-                        <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between">
-                            <span className="text-white/60 text-xs font-semibold uppercase tracking-wide">Seus produtos</span>
-                            <span className="text-white/40 text-xs">Margem</span>
+                    {/* Headline */}
+                    <h2 style={{
+                        fontFamily: "'Fraunces', serif",
+                        fontSize: 'clamp(32px, 3vw, 46px)',
+                        fontWeight: 900,
+                        lineHeight: 0.97,
+                        letterSpacing: '-0.03em',
+                        color: '#FFFFFF',
+                        margin: 0,
+                    }}>
+                        Bem-vindo de volta.<br />
+                        <em style={{ fontStyle: 'italic', color: '#FFF176' }}>Seus números esperam.</em>
+                    </h2>
+
+                    {/* Mini dashboard */}
+                    <div style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', overflow: 'hidden' }}>
+                        <div style={{ padding: '12px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Seus produtos</span>
+                            <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px' }}>Margem</span>
                         </div>
-                        {/* Items */}
-                        {PREVIEW_ITEMS.map((item, i) => {
-                            const s = STATUS_COLORS[item.status];
-                            return (
-                                <div key={i} className="px-4 py-3 flex items-center justify-between border-b border-white/[0.06] last:border-b-0">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-6 h-6 rounded-md bg-white/10 flex items-center justify-center">
-                                            <BarChart3 className="w-3 h-3 text-white/60" />
-                                        </div>
-                                        <div>
-                                            <div className="text-white/90 text-xs font-semibold">{item.name}</div>
-                                            <div className="text-white/40 text-xs" style={{ fontFamily: "'DM Mono', monospace" }}>{item.price}</div>
-                                        </div>
+                        {PREVIEW_ITEMS.map((item, i) => (
+                            <div key={i} style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: i < PREVIEW_ITEMS.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <BarChart3 size={12} color="rgba(255,255,255,0.6)" />
                                     </div>
-                                    <div className={`px-2 py-0.5 rounded-full text-xs font-bold ${s.bg} ${s.text}`}>
-                                        {item.margin}
+                                    <div>
+                                        <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px', fontWeight: 600 }}>{item.name}</div>
+                                        <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', fontFamily: "'DM Mono', monospace" }}>{item.price}</div>
                                     </div>
                                 </div>
-                            );
-                        })}
-                        {/* Alert footer */}
-                        <div className="px-4 py-2.5 bg-[rgba(255,107,107,0.12)] border-t border-white/10 flex items-center gap-2">
-                            <AlertTriangle className="w-3 h-3 text-[#FF6B6B] flex-shrink-0" />
-                            <span className="text-[#FF9999] text-xs">Calça Jeans está abaixo do preço mínimo.</span>
+                                <div style={{ padding: '3px 10px', borderRadius: '100px', background: STATUS[item.status].bg, color: STATUS[item.status].color, fontSize: '11px', fontWeight: 700 }}>
+                                    {item.margin}
+                                </div>
+                            </div>
+                        ))}
+                        <div style={{ padding: '10px 16px', background: 'rgba(255,107,107,0.12)', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <AlertTriangle size={12} color="#FF6B6B" />
+                            <span style={{ color: '#FF9999', fontSize: '12px' }}>Calça Jeans está abaixo do preço mínimo.</span>
                         </div>
                     </div>
 
-                    {/* Score card */}
-                    <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-white/[0.07] border border-white/10 rounded-xl p-4">
-                            <div className="text-white/40 text-xs mb-1">Score do negócio</div>
-                            <div
-                                className="text-white leading-none"
-                                style={{ fontFamily: "'DM Mono', monospace", fontSize: '28px', letterSpacing: '-0.04em' }}
-                            >
-                                72<span className="text-white/30 text-base">/100</span>
+                    {/* Score cards */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                        {[
+                            { label: 'Score do negócio', value: '72', suffix: '/100', color: '#fff' },
+                            { label: 'Margem média', value: '17%', color: '#22C55E' },
+                        ].map((c, i) => (
+                            <div key={i} style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '16px' }}>
+                                <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', marginBottom: '6px' }}>{c.label}</div>
+                                <div style={{ fontFamily: "'DM Mono', monospace", fontSize: '26px', letterSpacing: '-0.04em', color: c.color, lineHeight: 1 }}>
+                                    {c.value}
+                                    {c.suffix && <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.3)' }}>{c.suffix}</span>}
+                                </div>
                             </div>
-                        </div>
-                        <div className="bg-white/[0.07] border border-white/10 rounded-xl p-4">
-                            <div className="text-white/40 text-xs mb-1">Margem média</div>
-                            <div
-                                className="text-[#22C55E] leading-none"
-                                style={{ fontFamily: "'DM Mono', monospace", fontSize: '28px', letterSpacing: '-0.04em' }}
-                            >
-                                17%
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
 
-                {/* Bottom */}
-                <div className="relative z-10 border-t border-white/10 pt-6">
-                    <p className="text-white/30 text-xs">
+                {/* Rodapé */}
+                <div style={{ position: 'relative', zIndex: 1, borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '24px' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '12px', margin: 0 }}>
                         © 2026 Markap · Precificação inteligente para quem trabalha de verdade.
                     </p>
                 </div>
             </div>
 
-            {/* ── RIGHT PANEL ── */}
-            <div className="flex-1 flex flex-col justify-center items-center p-6 lg:p-16 bg-white">
-
-                {/* Mobile logo */}
-                <div className="lg:hidden mb-8">
-                    <Link to="/"><Logo className="w-32 h-8" /></Link>
-                </div>
-
-                <div className="w-full max-w-md space-y-8">
+            <div style={{
+                flex: 1,
+                alignSelf: 'stretch',
+                height: '100vh',
+                background: '#FFFFFF',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: '64px 48px',
+            }}>
+                <div style={{ width: '100%', maxWidth: '420px' }}>
 
                     {/* Header */}
-                    <div className="space-y-1.5">
-                        <h1
-                            className="text-[#0F0E0C] leading-tight tracking-tight"
-                            style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(28px, 3vw, 38px)', fontWeight: 900 }}
-                        >
+                    <div style={{ marginBottom: '36px' }}>
+                        <h1 style={{
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: 'clamp(28px, 3vw, 40px)',
+                            fontWeight: 900,
+                            letterSpacing: '-0.035em',
+                            color: '#0F0E0C',
+                            lineHeight: 1.05,
+                            marginBottom: '10px',
+                        }}>
                             Entrar no painel
                         </h1>
-                        <p className="text-[rgba(15,14,12,0.5)] text-sm">
+                        <p style={{ fontSize: '14px', color: 'rgba(15,14,12,0.5)', margin: 0 }}>
                             Ainda não tem conta?{' '}
-                            <Link to="/register" className="text-[#1A5C3A] font-bold hover:underline">
+                            <Link to="/register" style={{ color: '#1A5C3A', fontWeight: 700, textDecoration: 'none' }}>
                                 Criar conta grátis
                             </Link>
                         </p>
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-1">
-                            <label className="block text-xs font-semibold text-[rgba(15,14,12,0.5)] uppercase tracking-wide">
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            <label htmlFor="email" style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(15,14,12,0.45)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                                 E-mail
                             </label>
                             <input
+                                id="email"
                                 type="email"
                                 placeholder="seu@email.com"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full bg-[#F7F7F7] border border-[rgba(15,14,12,0.1)] rounded-xl px-4 py-3 text-[#0F0E0C] text-sm placeholder:text-[rgba(15,14,12,0.3)] outline-none transition-all focus:border-[#1A5C3A] focus:bg-white focus:ring-3 focus:ring-[rgba(26,92,58,0.08)]"
+                                style={{ width: '100%', background: '#F7F7F7', border: '1.5px solid rgba(15,14,12,0.1)', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: '#0F0E0C', outline: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif", boxSizing: 'border-box' }}
+                                onFocus={(e) => { e.target.style.borderColor = '#1A5C3A'; e.target.style.background = '#fff'; }}
+                                onBlur={(e) => { e.target.style.borderColor = 'rgba(15,14,12,0.1)'; e.target.style.background = '#F7F7F7'; }}
                             />
                         </div>
 
-                        <div className="space-y-1">
-                            <div className="flex items-center justify-between">
-                                <label className="block text-xs font-semibold text-[rgba(15,14,12,0.5)] uppercase tracking-wide">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <label htmlFor="password" style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(15,14,12,0.45)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                                     Senha
                                 </label>
-                                <button
-                                    type="button"
-                                    className="text-xs font-medium text-[#1A5C3A] hover:underline"
-                                >
+                                <button type="button" style={{ fontSize: '12px', color: '#1A5C3A', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                     Esqueceu a senha?
                                 </button>
                             </div>
                             <input
+                                id="password"
                                 type="password"
                                 placeholder="••••••••"
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-[#F7F7F7] border border-[rgba(15,14,12,0.1)] rounded-xl px-4 py-3 text-[#0F0E0C] text-sm placeholder:text-[rgba(15,14,12,0.3)] outline-none transition-all focus:border-[#1A5C3A] focus:bg-white focus:ring-3 focus:ring-[rgba(26,92,58,0.08)]"
+                                style={{ width: '100%', background: '#F7F7F7', border: '1.5px solid rgba(15,14,12,0.1)', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: '#0F0E0C', outline: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif", boxSizing: 'border-box' }}
+                                onFocus={(e) => { e.target.style.borderColor = '#1A5C3A'; e.target.style.background = '#fff'; }}
+                                onBlur={(e) => { e.target.style.borderColor = 'rgba(15,14,12,0.1)'; e.target.style.background = '#F7F7F7'; }}
                             />
                         </div>
 
                         {error && (
-                            <div className="p-3 bg-red-50 text-red-600 text-sm font-medium rounded-xl border border-red-200">
+                            <div style={{ padding: '12px 16px', background: '#FFF0F0', border: '1px solid rgba(220,38,38,0.2)', borderRadius: '10px', color: '#DC2626', fontSize: '13px', fontWeight: 500 }}>
                                 {error}
                             </div>
                         )}
@@ -209,30 +225,36 @@ export default function Login() {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full h-12 bg-[#1A5C3A] hover:bg-[#2E7D52] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[rgba(26,92,58,0.25)] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-                            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            style={{
+                                width: '100%',
+                                height: '52px',
+                                background: '#1A5C3A',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '10px',
+                                fontSize: '15px',
+                                fontWeight: 700,
+                                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                                cursor: isLoading ? 'not-allowed' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                opacity: isLoading ? 0.7 : 1,
+                                boxShadow: '0 4px 20px rgba(26,92,58,0.25)',
+                                transition: 'all 0.2s',
+                            }}
+                            onMouseEnter={(e) => { if (!isLoading) { e.currentTarget.style.background = '#2E7D52'; e.currentTarget.style.transform = 'translateY(-1px)'; } }}
+                            onMouseLeave={(e) => { e.currentTarget.style.background = '#1A5C3A'; e.currentTarget.style.transform = 'none'; }}
                         >
-                            {isLoading ? (
-                                <span className="flex items-center gap-2">
-                                    <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                                    </svg>
-                                    Entrando...
-                                </span>
-                            ) : (
-                                <>Entrar no painel <ArrowRight className="w-4 h-4" /></>
-                            )}
+                            {isLoading ? 'Entrando...' : <>Entrar no painel <ArrowRight size={16} /></>}
                         </button>
                     </form>
 
-                    {/* Trust signals */}
-                    <div className="flex items-center justify-center gap-6 pt-2">
-                        {[
-                            '🔒 Dados criptografados',
-                            '🇧🇷 Feito no Brasil',
-                        ].map((t, i) => (
-                            <span key={i} className="text-xs text-[rgba(15,14,12,0.3)]">{t}</span>
+                    {/* Trust */}
+                    <div style={{ marginTop: '28px', display: 'flex', justifyContent: 'center', gap: '24px' }}>
+                        {['🔒 Dados criptografados', '🇧🇷 Feito no Brasil'].map((t, i) => (
+                            <span key={i} style={{ fontSize: '12px', color: 'rgba(15,14,12,0.3)' }}>{t}</span>
                         ))}
                     </div>
                 </div>
