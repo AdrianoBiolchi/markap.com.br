@@ -16,10 +16,6 @@ import {
 } from 'lucide-react';
 import { useProductStore } from '../store/useProductStore';
 import { useBusinessStore } from '../store/useBusinessStore';
-import Button from '../components/ui/Button';
-import Card, { CardContent } from '../components/ui/Card';
-import Badge from '../components/ui/Badge';
-import { cn } from '../lib/utils';
 import { calcNetMargin, calcBreakEven } from '../utils/pricing';
 
 export default function Analysis() {
@@ -47,17 +43,33 @@ export default function Analysis() {
 
     if (isProductsLoading || isProfileLoading || (!product && products.length === 0)) {
         return (
-            <div className="p-8 max-w-7xl mx-auto flex items-center justify-center min-h-[60vh]">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-green-primary border-t-transparent rounded-full animate-spin" />
-                    <p className="text-text-secondary font-medium">Analisando dados...</p>
+            <div style={{
+                padding: '48px 56px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '60vh',
+                backgroundColor: '#FFFFFF',
+                fontFamily: '"Plus Jakarta Sans", sans-serif'
+            }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+                    <div style={{
+                        width: '48px',
+                        height: '48px',
+                        border: '4px solid #1A5C3A',
+                        borderTopColor: 'transparent',
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite'
+                    }} />
+                    <p style={{ color: '#6B7280', fontWeight: '500' }}>Analisando dados...</p>
+                    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
                 </div>
             </div>
         );
     }
 
     if (!product) {
-        return <div className="p-8">Produto não encontrado.</div>;
+        return <div style={{ padding: '48px 56px', fontFamily: '"Plus Jakarta Sans", sans-serif' }}>Produto não encontrado.</div>;
     }
 
     const simMargin = useMemo(() => {
@@ -73,202 +85,406 @@ export default function Analysis() {
     const expectedVolume = product.expectedVolume || 100;
 
     return (
-        <div className="p-8 max-w-7xl mx-auto space-y-8">
+        <div style={{
+            padding: '48px 56px',
+            backgroundColor: '#FFFFFF',
+            minHeight: '100vh',
+            fontFamily: '"Plus Jakarta Sans", sans-serif',
+            boxSizing: 'border-box'
+        }}>
             {/* Header */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <button onClick={() => navigate(-1)} className="p-2 hover:bg-surface rounded-xl border border-border transition-colors">
-                        <ArrowLeft className="w-5 h-5 text-text-secondary" />
+            <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    <button
+                        onClick={() => navigate(-1)}
+                        style={{
+                            width: '40px',
+                            height: '40px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: '#F3F4F6',
+                            border: '1px solid #E5E7EB',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            color: '#6B7280'
+                        }}
+                    >
+                        <ArrowLeft size={20} />
                     </button>
                     <div>
-                        <h1 className="text-3xl font-display font-bold text-text-primary">Análise Detalhada</h1>
-                        <p className="text-text-secondary mt-1">{product.name}</p>
+                        <h1 style={{
+                            fontSize: '32px',
+                            fontWeight: '800',
+                            fontFamily: '"Fraunces", serif',
+                            color: '#0F0E0C',
+                            letterSpacing: '-0.02em',
+                            margin: 0,
+                            marginBottom: '4px'
+                        }}>
+                            Análise Detalhada
+                        </h1>
+                        <p style={{ fontSize: '16px', color: '#6B7280', margin: 0 }}>{product.name}</p>
                     </div>
                 </div>
-                <Badge variant={product.healthScore > 70 ? 'success' : 'danger'} className="px-4 py-1.5 text-sm uppercase">
+                <div style={{
+                    padding: '8px 20px',
+                    borderRadius: '50px',
+                    backgroundColor: product.healthScore > 70 ? 'rgba(26, 92, 58, 0.1)' : 'rgba(220, 38, 38, 0.1)',
+                    color: product.healthScore > 70 ? '#1A5C3A' : '#DC2626',
+                    fontSize: '14px',
+                    fontWeight: '800',
+                    textTransform: 'uppercase'
+                }}>
                     Saúde: {product.healthScore || 0}/100
-                </Badge>
+                </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Main Analysis */}
-                <div className="lg:col-span-8 space-y-8">
-                    <Card className="p-8">
-                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                            <Scale className="w-5 h-5 text-green-primary" /> Diagnóstico de Lucratividade
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                            <div className="space-y-6">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '40px' }}>
+                {/* Main Analysis Column */}
+                <div style={{ gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '40px' }}>
+
+                    <FormCard>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
+                            <Scale size={20} color="#1A5C3A" />
+                            <h3 style={{ fontSize: '20px', fontWeight: '700', color: '#0F0E0C', margin: 0 }}>Diagnóstico de Lucratividade</h3>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '48px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                                 <div>
-                                    <p className="text-sm font-medium text-text-secondary">Margem Líquida Atual</p>
-                                    <div className="flex items-center gap-3 mt-1">
-                                        <h2 className={cn(
-                                            "text-5xl font-display font-bold",
-                                            currentMargin > 15 ? "text-green-primary" : "text-danger"
-                                        )}>
+                                    <p style={{ fontSize: '14px', fontWeight: '600', color: '#6B7280', marginBottom: '8px' }}>Margem Líquida Atual</p>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                        <h2 style={{
+                                            fontSize: '56px',
+                                            fontWeight: '800',
+                                            fontFamily: '"DM Mono", monospace',
+                                            color: currentMargin > 15 ? '#1A5C3A' : '#DC2626',
+                                            margin: 0,
+                                            letterSpacing: '-0.04em'
+                                        }}>
                                             {currentMargin.toFixed(1)}%
                                         </h2>
-                                        {currentMargin > 15 ? (
-                                            <div className="p-1.5 bg-green-light text-green-primary rounded-lg">
-                                                <TrendingUp className="w-5 h-5" />
-                                            </div>
-                                        ) : (
-                                            <div className="p-1.5 bg-danger-light text-danger rounded-lg">
-                                                <TrendingDown className="w-5 h-5" />
-                                            </div>
-                                        )}
+                                        <div style={{
+                                            padding: '8px',
+                                            backgroundColor: currentMargin > 15 ? 'rgba(26, 92, 58, 0.1)' : 'rgba(220, 38, 38, 0.1)',
+                                            color: currentMargin > 15 ? '#1A5C3A' : '#DC2626',
+                                            borderRadius: '10px'
+                                        }}>
+                                            {currentMargin > 15 ? <TrendingUp size={24} /> : <TrendingDown size={24} />}
+                                        </div>
                                     </div>
                                 </div>
-                                <p className="text-sm text-text-secondary leading-relaxed">
+                                <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: '1.6', margin: 0 }}>
                                     Para cada <strong>R$ 100,00</strong> vendidos, restam <strong>R$ {currentMargin.toFixed(2)}</strong> no seu bolso após pagar fornecedores, impostos, taxas e sua parcela dos custos fixos.
                                 </p>
-                                <div className="p-4 bg-background rounded-2xl flex items-center justify-between border border-border">
+                                <div style={{
+                                    padding: '20px',
+                                    backgroundColor: '#F9FAFB',
+                                    borderRadius: '16px',
+                                    border: '1px solid #E5E7EB',
+                                    display: 'flex',
+                                    justifyContent: 'space-between'
+                                }}>
                                     <div>
-                                        <p className="text-xs font-medium text-text-secondary uppercase">Ponto de Equilíbrio</p>
-                                        <p className="font-bold text-text-primary mt-0.5">{currentBreakEven} unidades/mês</p>
+                                        <p style={{ fontSize: '11px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '4px', margin: 0 }}>Ponto de Equilíbrio</p>
+                                        <p style={{ fontSize: '15px', fontWeight: '800', color: '#0F0E0C', margin: 0 }}>{currentBreakEven} unidades/mês</p>
                                     </div>
-                                    <div className="text-right">
-                                        <p className="text-xs font-medium text-text-secondary uppercase">Segurança</p>
-                                        <p className="font-bold text-green-primary mt-0.5">
+                                    <div style={{ textAlign: 'right' }}>
+                                        <p style={{ fontSize: '11px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '4px', margin: 0 }}>Margem de Segurança</p>
+                                        <p style={{ fontSize: '15px', fontWeight: '800', color: '#1A5C3A', margin: 0 }}>
                                             {expectedVolume > 0 ? ((1 - (currentBreakEven / expectedVolume)) * 100).toFixed(0) : 0}% de folga
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="space-y-4">
-                                <h4 className="font-bold text-sm text-text-secondary uppercase tracking-wider">Insights do Diagnóstico</h4>
-                                <div className="space-y-3">
-                                    <InsightItem
-                                        title="Lógica de Rateio"
-                                        text="Seu markup considera o custo fixo como 29% do faturamento previsto."
-                                        type="success"
-                                        icon={ShieldCheck}
-                                    />
-                                    <InsightItem
-                                        title="Meta de Margem"
-                                        text={currentMargin >= 20 ? "Sua lucratividade está alinhada com as melhores práticas do SEBRAE." : "Sua margem está pressionada. Considere rever custos diretos."}
-                                        type={currentMargin >= 20 ? "success" : "warning"}
-                                        icon={CheckCircle2}
-                                    />
-                                    <PaywallInsight />
-                                    <PaywallInsight />
-                                </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <h4 style={{ fontSize: '12px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>Insights do Diagnóstico</h4>
+                                <InsightItem
+                                    title="Lógica de Rateio"
+                                    text="Seu markup considera proporcionalmente sua estrutura de custos fixa configurada."
+                                    type="success"
+                                    icon={ShieldCheck}
+                                />
+                                <InsightItem
+                                    title="Meta de Margem"
+                                    text={currentMargin >= 20 ? "Sua lucratividade está alinhada com as melhores práticas de mercado." : "Sua margem está pressionada. Considere rever custos diretos ou aumentar o preço."}
+                                    type={currentMargin >= 20 ? "success" : "warning"}
+                                    icon={CheckCircle2}
+                                />
+                                <PaywallInsight />
+                                <PaywallInsight />
                             </div>
                         </div>
-                    </Card>
+                    </FormCard>
 
-                    {/* Advanced Charts Placeholder */}
-                    <Card className="p-8 border-dashed bg-background/50 flex flex-col items-center justify-center text-center space-y-4">
-                        <div className="w-16 h-16 bg-surface border border-border rounded-full flex items-center justify-center text-text-secondary">
-                            <BarChart3 className="w-8 h-8" />
+                    {/* Chart Placeholder */}
+                    <div style={{
+                        padding: '64px 32px',
+                        backgroundColor: '#F9FAFB',
+                        border: '2px dashed #E5E7EB',
+                        borderRadius: '24px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        textAlign: 'center',
+                        gap: '24px'
+                    }}>
+                        <div style={{
+                            width: '64px',
+                            height: '64px',
+                            backgroundColor: '#FFFFFF',
+                            border: '1px solid #E5E7EB',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#9CA3AF'
+                        }}>
+                            <BarChart3 size={32} />
                         </div>
                         <div>
-                            <h4 className="font-bold text-lg">Histórico de Performance</h4>
-                            <p className="text-text-secondary max-w-sm mx-auto mt-1">Conecte seu ERP ou planilha para ver a evolução das vendas e margem ao longo do tempo.</p>
+                            <h4 style={{ fontSize: '20px', fontWeight: '700', color: '#0F0E0C', margin: 0, marginBottom: '8px' }}>Histórico de Performance</h4>
+                            <p style={{ fontSize: '14px', color: '#6B7280', maxWidth: '380px', margin: 0 }}>Conecte seu ERP ou planilha para ver a evolução das vendas e margem ao longo do tempo.</p>
                         </div>
-                        <Button variant="outline" size="sm" className="gap-2">
-                            <Zap className="w-3 h-3 fill-amber text-amber" /> Disponível no Plano Pro
-                        </Button>
-                    </Card>
+                        <button style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            padding: '10px 20px',
+                            backgroundColor: '#FFFFFF',
+                            border: '1px solid #E5E7EB',
+                            borderRadius: '50px',
+                            fontSize: '13px',
+                            fontWeight: '700',
+                            color: '#0F0E0C',
+                            cursor: 'pointer'
+                        }}>
+                            <Zap size={14} fill="#D97706" color="#D97706" />
+                            Disponível no Plano Pro
+                        </button>
+                    </div>
                 </div>
 
-                {/* Simulator Sidebar */}
-                <div className="lg:col-span-4 space-y-6">
-                    <Card className="p-6 border-2 border-green-primary/20 shadow-xl shadow-green-primary/5">
-                        <h3 className="font-bold text-lg flex items-center gap-2 mb-6">
-                            <Dna className="w-5 h-5 text-green-primary" /> Simulador de Impacto
-                        </h3>
+                {/* Simulator Column */}
+                <div style={{ gridColumn: 'span 4', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                    <div style={{
+                        padding: '32px',
+                        backgroundColor: '#FFFFFF',
+                        border: '2px solid rgba(26, 92, 58, 0.2)',
+                        borderRadius: '24px',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.03)'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '32px' }}>
+                            <Dna size={20} color="#1A5C3A" />
+                            <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#0F0E0C', margin: 0 }}>Simulador de Impacto</h3>
+                        </div>
 
-                        <div className="space-y-6">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                             <div>
-                                <label className="text-sm font-medium text-text-primary">Se eu vender por:</label>
-                                <div className="relative mt-2">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary font-bold">R$</span>
+                                <label style={{ fontSize: '13px', fontWeight: '600', color: '#6B7280' }}>Se eu vender por:</label>
+                                <div style={{ position: 'relative', marginTop: '12px' }}>
+                                    <span style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', fontWeight: '800', color: '#9CA3AF' }}>R$</span>
                                     <input
                                         type="number"
                                         value={simPrice}
                                         onChange={(e) => setSimPrice(Number(e.target.value))}
-                                        className="w-full h-14 bg-background border-2 border-border focus:border-green-primary rounded-2xl pl-12 pr-4 text-xl font-bold transition-all focus:outline-none"
+                                        style={{
+                                            width: '100%',
+                                            height: '64px',
+                                            backgroundColor: '#F9FAFB',
+                                            border: '2px solid #E5E7EB',
+                                            borderRadius: '16px',
+                                            paddingLeft: '50px',
+                                            paddingRight: '20px',
+                                            fontSize: '24px',
+                                            fontWeight: '800',
+                                            fontFamily: '"DM Mono", monospace',
+                                            color: '#0F0E0C',
+                                            outline: 'none',
+                                            transition: 'all 0.2s ease',
+                                            boxSizing: 'border-box'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#1A5C3A'}
+                                        onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
                                     />
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="p-4 bg-background rounded-2xl border border-border">
-                                    <p className="text-xs font-medium text-text-secondary">Nova Margem</p>
-                                    <p className={cn(
-                                        "text-2xl font-bold mt-1",
-                                        simMargin > 15 ? "text-green-primary" : (simMargin > 0 ? "text-amber" : "text-danger")
-                                    )}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+                                <div style={{ padding: '20px', backgroundColor: '#F9FAFB', borderRadius: '16px', border: '1px solid #E5E7EB' }}>
+                                    <p style={{ fontSize: '11px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '8px', margin: 0 }}>Nova Margem</p>
+                                    <p style={{
+                                        fontSize: '20px',
+                                        fontWeight: '800',
+                                        fontFamily: '"DM Mono", monospace',
+                                        color: simMargin > 15 ? '#1A5C3A' : (simMargin > 0 ? '#D97706' : '#DC2626'),
+                                        margin: 0
+                                    }}>
                                         {simMargin.toFixed(1)}%
                                     </p>
                                 </div>
-                                <div className="p-4 bg-background rounded-2xl border border-border">
-                                    <p className="text-xs font-medium text-text-secondary">Novo Break-even</p>
-                                    <p className="text-2xl font-bold mt-1 text-text-primary">
-                                        {simBreakEven} <span className="text-xs font-normal text-text-secondary">unid.</span>
+                                <div style={{ padding: '20px', backgroundColor: '#F9FAFB', borderRadius: '16px', border: '1px solid #E5E7EB' }}>
+                                    <p style={{ fontSize: '11px', fontWeight: '700', color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '8px', margin: 0 }}>Novo Break-even</p>
+                                    <p style={{ fontSize: '20px', fontWeight: '800', fontFamily: '"DM Mono", monospace', color: '#0F0E0C', margin: 0 }}>
+                                        {simBreakEven} <span style={{ fontSize: '12px', fontWeight: '500', color: '#9CA3AF' }}>unid.</span>
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="p-4 bg-green-light rounded-2xl border border-green-border">
-                                <div className="flex items-center justify-between text-sm font-bold text-green-primary">
-                                    <span>Impacto no Lucro</span>
-                                    <span>{simMargin > currentMargin ? '+' : ''}{(simMargin - currentMargin).toFixed(1)}%</span>
+                            <div style={{
+                                padding: '20px',
+                                backgroundColor: 'rgba(26, 92, 58, 0.05)',
+                                borderRadius: '16px',
+                                border: '1px solid rgba(26, 92, 58, 0.1)'
+                            }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                    <span style={{ fontSize: '13px', fontWeight: '700', color: '#1A5C3A' }}>Impacto no Lucro</span>
+                                    <span style={{ fontSize: '15px', fontWeight: '800', color: '#1A5C3A' }}>{simMargin > currentMargin ? '+' : ''}{(simMargin - currentMargin).toFixed(1)}%</span>
                                 </div>
-                                <div className="w-full h-2 bg-green-border/50 rounded-full mt-2 overflow-hidden">
-                                    <div
-                                        className="h-full bg-green-primary transition-all duration-500"
-                                        style={{ width: `${Math.max(0, Math.min(100, (simMargin / (currentMargin || 1)) * 50))}%` }}
-                                    />
+                                <div style={{ width: '100%', height: '8px', backgroundColor: 'rgba(26, 92, 58, 0.1)', borderRadius: '10px', overflow: 'hidden' }}>
+                                    <div style={{
+                                        height: '100%',
+                                        backgroundColor: '#1A5C3A',
+                                        width: `${Math.max(0, Math.min(100, (simMargin / (currentMargin || 1)) * 50))}%`,
+                                        transition: 'width 0.5s ease'
+                                    }} />
                                 </div>
                             </div>
 
-                            <Button
+                            <PrimaryButton
                                 onClick={() => navigate('/calculator/' + id)}
+                                label="Aplicar Novo Preço"
                                 variant="secondary"
-                                className="w-full h-12"
-                            >
-                                Aplicar Novo Preço
-                            </Button>
+                            />
                         </div>
-                    </Card>
+                    </div>
 
-                    <Card className="bg-amber-light border-amber-border overflow-hidden relative">
-                        <Zap className="absolute -right-4 -top-4 w-24 h-24 text-amber/10 rotate-12" />
-                        <CardContent className="p-6">
-                            <Badge variant="warning" className="mb-4">PLANO FREE</Badge>
-                            <h4 className="font-bold text-text-primary">Libere o Diagnóstico Inteligente</h4>
-                            <p className="text-sm text-text-secondary mt-2 leading-relaxed">
+                    <div style={{
+                        padding: '32px',
+                        backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                        borderRadius: '24px',
+                        border: '1px solid rgba(217, 119, 6, 0.2)',
+                        position: 'relative',
+                        overflow: 'hidden'
+                    }}>
+                        <Zap size={80} style={{ position: 'absolute', right: '-20px', top: '-10px', color: 'rgba(217, 119, 6, 0.1)', transform: 'rotate(15deg)' }} />
+                        <div style={{ position: 'relative', zIndex: 1 }}>
+                            <span style={{
+                                display: 'inline-block',
+                                padding: '4px 12px',
+                                backgroundColor: '#D97706',
+                                color: '#FFFFFF',
+                                borderRadius: '50px',
+                                fontSize: '10px',
+                                fontWeight: '900',
+                                textTransform: 'uppercase',
+                                marginBottom: '16px'
+                            }}>Plano Free</span>
+                            <h4 style={{ fontSize: '18px', fontWeight: '700', color: '#0F0E0C', margin: 0, marginBottom: '8px' }}>Diagnóstico Inteligente</h4>
+                            <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: '1.5', margin: 0, marginBottom: '24px' }}>
                                 Você está perdendo <strong>3 insights valiosos</strong> sobre como reduzir seus custos de embalagem e frete.
                             </p>
-                            <Button onClick={() => navigate('/upgrade')} className="w-full mt-6 bg-amber hover:bg-amber/90 text-white border-none gap-2">
-                                Migrar para o Pro <ArrowRight className="w-4 h-4" />
-                            </Button>
-                        </CardContent>
-                    </Card>
+                            <button
+                                onClick={() => navigate('/upgrade')}
+                                style={{
+                                    width: '100%',
+                                    padding: '16px',
+                                    backgroundColor: '#D97706',
+                                    color: '#FFFFFF',
+                                    border: 'none',
+                                    borderRadius: '14px',
+                                    fontSize: '15px',
+                                    fontWeight: '700',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '10px',
+                                    transition: 'all 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => e.target.style.backgroundColor = '#b45309'}
+                                onMouseLeave={(e) => e.target.style.backgroundColor = '#D97706'}
+                            >
+                                Migrar para o Pro <ArrowRight size={18} />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     );
 }
 
+// Internal Styled Components
+function FormCard({ children }) {
+    return (
+        <div style={{
+            padding: '32px',
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #E5E7EB',
+            borderRadius: '24px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
+        }}>
+            {children}
+        </div>
+    );
+}
+
+function PrimaryButton({ onClick, label, variant = 'primary' }) {
+    const isPrimary = variant === 'primary';
+    const [isHovered, setIsHovered] = useState(false);
+    return (
+        <button
+            onClick={onClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{
+                width: '100%',
+                padding: '16px 24px',
+                fontSize: '15px',
+                fontWeight: '700',
+                color: isPrimary ? '#FFFFFF' : '#1A5C3A',
+                backgroundColor: isPrimary
+                    ? (isHovered ? '#154a2f' : '#1A5C3A')
+                    : (isHovered ? 'rgba(26, 92, 58, 0.1)' : 'rgba(26, 92, 58, 0.05)'),
+                border: isPrimary ? 'none' : '1px solid rgba(26, 92, 58, 0.2)',
+                borderRadius: '14px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                fontFamily: '"Plus Jakarta Sans", sans-serif'
+            }}
+        >
+            {label}
+        </button>
+    );
+}
+
 function InsightItem({ title, text, type, icon: Icon }) {
-    const styles = {
-        warning: 'bg-amber-light border-amber-border text-amber',
-        success: 'bg-green-light border-green-border text-green-primary',
-        danger: 'bg-danger-light border-danger text-danger',
+    const colors = {
+        success: { bg: 'rgba(26, 92, 58, 0.1)', color: '#1A5C3A', border: 'rgba(26, 92, 58, 0.15)' },
+        warning: { bg: 'rgba(217, 119, 6, 0.1)', color: '#D97706', border: 'rgba(217, 119, 6, 0.15)' },
+        danger: { bg: 'rgba(220, 38, 38, 0.1)', color: '#DC2626', border: 'rgba(220, 38, 38, 0.15)' },
     };
 
+    const style = colors[type] || { bg: '#F9FAFB', color: '#6B7280', border: '#E5E7EB' };
+
     return (
-        <div className={cn("p-4 rounded-2xl border flex gap-3", styles[type] || 'bg-background border-border')}>
-            <div className="shrink-0 mt-0.5">
-                {Icon ? <Icon className="w-4 h-4" /> : <CheckCircle2 className="w-4 h-4" />}
+        <div style={{
+            padding: '16px',
+            backgroundColor: style.bg,
+            border: `1px solid ${style.border}`,
+            borderRadius: '16px',
+            display: 'flex',
+            gap: '12px'
+        }}>
+            <div style={{ marginTop: '2px', color: style.color }}>
+                {Icon ? <Icon size={16} /> : <CheckCircle2 size={16} />}
             </div>
             <div>
-                <h5 className="text-sm font-bold">{title}</h5>
-                <p className="text-xs opacity-90 mt-0.5 leading-relaxed">{text}</p>
+                <h5 style={{ fontSize: '13px', fontWeight: '700', color: '#0F0E0C', margin: 0, marginBottom: '2px' }}>{title}</h5>
+                <p style={{ fontSize: '12px', color: '#6B7280', margin: 0, lineHeight: '1.5' }}>{text}</p>
             </div>
         </div>
     );
@@ -276,13 +492,21 @@ function InsightItem({ title, text, type, icon: Icon }) {
 
 function PaywallInsight() {
     return (
-        <div className="p-4 rounded-2xl border border-border bg-background/50 flex gap-3 opacity-60 font-serif">
-            <div className="shrink-0 mt-0.5 text-text-secondary">
-                <Lock className="w-4 h-4" />
+        <div style={{
+            padding: '16px',
+            backgroundColor: '#F9FAFB',
+            border: '1px solid #E5E7EB',
+            borderRadius: '16px',
+            display: 'flex',
+            gap: '12px',
+            opacity: 0.6
+        }}>
+            <div style={{ marginTop: '2px', color: '#9CA3AF' }}>
+                <Lock size={16} />
             </div>
-            <div className="flex-1">
-                <div className="h-4 bg-gray-200 rounded-md w-1/2 mb-2 animate-pulse" />
-                <div className="h-3 bg-gray-100 rounded-md w-full animate-pulse" />
+            <div style={{ flex: 1 }}>
+                <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '4px', width: '60%', marginBottom: '8px' }} />
+                <div style={{ height: '8px', backgroundColor: '#F3F4F6', borderRadius: '4px', width: '90%' }} />
             </div>
         </div>
     );

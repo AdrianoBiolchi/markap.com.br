@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { ArrowRight, BarChart3, AlertTriangle } from 'lucide-react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { ArrowRight, BarChart3, AlertTriangle, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 import { Logo } from '../components/ui/Logo';
 
@@ -19,13 +19,63 @@ const STATUS = {
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { login, isLoading, error } = useAuthStore();
+    const [showPassword, setShowPassword] = useState(false);
+    const [errors, setErrors] = useState({});
+    const { login, isLoading, error: backendError } = useAuthStore();
     const navigate = useNavigate();
+    const location = useLocation();
+    const resetSuccess = new URLSearchParams(location.search).get('reset') === 'success';
+
+    const validate = () => {
+        const newErrors = {};
+        if (!email.trim()) newErrors.email = 'Este campo é obrigatório';
+        if (!password.trim()) newErrors.password = 'Este campo é obrigatório';
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validate()) return;
+
         const success = await login(email, password);
         if (success) navigate('/dashboard');
+    };
+
+    // Mensagens amigáveis baseadas em status ou keywords do erro
+    let displayError = backendError;
+    if (backendError) {
+        if (backendError.includes('401') || backendError.toLowerCase().includes('invalid') || backendError.toLowerCase().includes('unauthorized')) {
+            displayError = 'E-mail ou senha incorretos. Tente novamente.';
+        } else if (backendError.includes('429') || backendError.toLowerCase().includes('too many attempts') || backendError.toLowerCase().includes('muitas tentativas')) {
+            displayError = 'Muitas tentativas. Aguarde alguns minutos.';
+        }
+    }
+
+    const inputStyle = (fieldId) => ({
+        width: '100%',
+        background: '#F7F7F7',
+        border: errors[fieldId]
+            ? '1.5px solid #DC2626'
+            : '1.5px solid rgba(15,14,12,0.1)',
+        borderRadius: '10px',
+        padding: '12px 16px',
+        paddingRight: fieldId === 'password' ? '48px' : '16px',
+        fontSize: '14px',
+        color: '#0F0E0C',
+        outline: 'none',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        boxSizing: 'border-box',
+        transition: 'border-color 0.15s, background 0.15s',
+    });
+
+    const errorTextStyle = {
+        fontSize: '12px',
+        color: '#DC2626',
+        marginTop: '4px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '4px'
     };
 
     return (
@@ -111,7 +161,7 @@ export default function Login() {
                         ))}
                         <div style={{ padding: '10px 16px', background: 'rgba(255,107,107,0.12)', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <AlertTriangle size={12} color="#FF6B6B" />
-                            <span style={{ color: '#FF9999', fontSize: '12px' }}>Calça Jeans está abaixo do preço mínimo.</span>
+                            <span style={{ color: '#FF9999', fontSize: '12px' }}>Calça Jeans está abaixo do price mínimo.</span>
                         </div>
                     </div>
 
@@ -175,8 +225,28 @@ export default function Login() {
                     </div>
 
                     {/* Form */}
+                    {resetSuccess && (
+                        <div style={{
+                            padding: '12px 16px',
+                            background: '#DCFCE7',
+                            border: '1px solid rgba(34,197,94,0.25)',
+                            borderRadius: '10px',
+                            color: '#1A5C3A',
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            marginBottom: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                        }}>
+                            <span style={{ fontSize: '16px' }}>✓</span>
+                            <span>Senha redefinida com sucesso! Faça login com sua nova senha.</span>
+                        </div>
+                    )}
+
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 
+                        {/* Campo: E-mail */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                             <label htmlFor="email" style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(15,14,12,0.45)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                                 E-mail
@@ -185,40 +255,97 @@ export default function Login() {
                                 id="email"
                                 type="email"
                                 placeholder="seu@email.com"
-                                required
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                style={{ width: '100%', background: '#F7F7F7', border: '1.5px solid rgba(15,14,12,0.1)', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: '#0F0E0C', outline: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif", boxSizing: 'border-box' }}
-                                onFocus={(e) => { e.target.style.borderColor = '#1A5C3A'; e.target.style.background = '#fff'; }}
-                                onBlur={(e) => { e.target.style.borderColor = 'rgba(15,14,12,0.1)'; e.target.style.background = '#F7F7F7'; }}
+                                onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    if (errors.email) setErrors(prev => ({ ...prev, email: null }));
+                                }}
+                                style={inputStyle('email')}
+                                onFocus={(e) => {
+                                    if (!errors.email) e.target.style.borderColor = '#1A5C3A';
+                                    e.target.style.background = '#fff';
+                                }}
+                                onBlur={(e) => {
+                                    if (!errors.email) e.target.style.borderColor = 'rgba(15,14,12,0.1)';
+                                    e.target.style.background = '#F7F7F7';
+                                }}
                             />
+                            {errors.email && (
+                                <span style={errorTextStyle}>⚠ {errors.email}</span>
+                            )}
                         </div>
 
+                        {/* Campo: Senha */}
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <label htmlFor="password" style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(15,14,12,0.45)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                                     Senha
                                 </label>
-                                <button type="button" style={{ fontSize: '12px', color: '#1A5C3A', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                                <Link to="/forgot-password" style={{ fontSize: '12px', color: '#1A5C3A', fontWeight: 600, textDecoration: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                                     Esqueceu a senha?
+                                </Link>
+                            </div>
+                            <div style={{ position: 'relative' }}>
+                                <input
+                                    id="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) => {
+                                        setPassword(e.target.value);
+                                        if (errors.password) setErrors(prev => ({ ...prev, password: null }));
+                                    }}
+                                    style={inputStyle('password')}
+                                    onFocus={(e) => {
+                                        if (!errors.password) e.target.style.borderColor = '#1A5C3A';
+                                        e.target.style.background = '#fff';
+                                    }}
+                                    onBlur={(e) => {
+                                        if (!errors.password) e.target.style.borderColor = 'rgba(15,14,12,0.1)';
+                                        e.target.style.background = '#F7F7F7';
+                                    }}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    style={{
+                                        position: 'absolute',
+                                        right: '12px',
+                                        top: '50%',
+                                        transform: 'translateY(-50%)',
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                        color: 'rgba(15,14,12,0.4)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        padding: '4px',
+                                    }}
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
-                            <input
-                                id="password"
-                                type="password"
-                                placeholder="••••••••"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                style={{ width: '100%', background: '#F7F7F7', border: '1.5px solid rgba(15,14,12,0.1)', borderRadius: '10px', padding: '12px 16px', fontSize: '14px', color: '#0F0E0C', outline: 'none', fontFamily: "'Plus Jakarta Sans', sans-serif", boxSizing: 'border-box' }}
-                                onFocus={(e) => { e.target.style.borderColor = '#1A5C3A'; e.target.style.background = '#fff'; }}
-                                onBlur={(e) => { e.target.style.borderColor = 'rgba(15,14,12,0.1)'; e.target.style.background = '#F7F7F7'; }}
-                            />
+                            {errors.password && (
+                                <span style={errorTextStyle}>⚠ {errors.password}</span>
+                            )}
                         </div>
 
-                        {error && (
-                            <div style={{ padding: '12px 16px', background: '#FFF0F0', border: '1px solid rgba(220,38,38,0.2)', borderRadius: '10px', color: '#DC2626', fontSize: '13px', fontWeight: 500 }}>
-                                {error}
+                        {/* Banner de Erro Geral */}
+                        {backendError && (
+                            <div style={{
+                                padding: '12px 16px',
+                                background: '#FFF0F0',
+                                border: '1px solid rgba(220,38,38,0.2)',
+                                borderRadius: '10px',
+                                color: '#DC2626',
+                                fontSize: '13px',
+                                fontWeight: 500,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                            }}>
+                                <AlertCircle size={16} />
+                                <span>⚠ {displayError}</span>
                             </div>
                         )}
 
@@ -228,7 +355,7 @@ export default function Login() {
                             style={{
                                 width: '100%',
                                 height: '52px',
-                                background: '#1A5C3A',
+                                background: isLoading ? '#2E7D52' : '#1A5C3A',
                                 color: '#fff',
                                 border: 'none',
                                 borderRadius: '10px',

@@ -3,23 +3,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono&display=swap');
 
 @theme {
-  --color-background: #F8F7F4;
+  --color-background: #F9FAFB;
   --color-surface: #FFFFFF;
-  --color-green-primary: #1A6B4A;
-  --color-green-light: #ECFDF5;
-  --color-green-border: #A7F3D0;
-  --color-amber: #F59E0B;
-  --color-amber-light: #FFFBEB;
-  --color-amber-border: #FDE68A;
-  --color-danger: #EF4444;
-  --color-danger-light: #FEF2F2;
-  --color-text-primary: #1A1A2E;
+  --color-green-primary: #1A5C3A;
+  --color-green-light: rgba(26, 92, 58, 0.05);
+  --color-green-border: rgba(26, 92, 58, 0.2);
+  --color-amber: #D97706;
+  --color-amber-light: rgba(217, 119, 6, 0.1);
+  --color-amber-border: rgba(217, 119, 6, 0.2);
+  --color-danger: #DC2626;
+  --color-danger-light: rgba(220, 38, 38, 0.1);
+  --color-text-primary: #0F0E0C;
   --color-text-secondary: #6B7280;
   --color-border: #E5E7EB;
 
   --font-display: "Fraunces", serif;
   --font-body: "Plus Jakarta Sans", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-mono: "DM Mono", monospace;
 }
 
 @layer base {

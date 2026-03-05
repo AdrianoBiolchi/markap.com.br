@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import {
     Check,
     Zap,
@@ -10,9 +11,6 @@ import {
     BarChart4,
     Users2
 } from 'lucide-react';
-import Button from '../components/ui/Button';
-import Card, { CardContent } from '../components/ui/Card';
-import { cn } from '../lib/utils';
 
 const plans = [
     {
@@ -64,30 +62,69 @@ export default function Upgrade() {
     const navigate = useNavigate();
 
     return (
-        <div className="py-20 px-8 max-w-7xl mx-auto space-y-16">
+        <div style={{
+            padding: '48px 56px',
+            backgroundColor: '#FFFFFF',
+            minHeight: '100vh',
+            fontFamily: '"Plus Jakarta Sans", sans-serif',
+            boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '64px'
+        }}>
             {/* Hero */}
-            <div className="text-center space-y-6 max-w-3xl mx-auto">
-                <Badge variant="warning" className="px-4 py-1.5 uppercase tracking-widest font-black">
-                    Pare de Deixar Dinheiro na Mesa
-                </Badge>
-                <h1 className="text-5xl font-display font-bold text-text-primary leading-tight">
+            <div style={{ textAlign: 'center', margin: '0 auto', maxWidth: '800px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div>
+                    <span style={{
+                        padding: '8px 24px',
+                        backgroundColor: '#D97706',
+                        color: '#FFFFFF',
+                        borderRadius: '50px',
+                        fontSize: '12px',
+                        fontWeight: '900',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em'
+                    }}>
+                        Pare de Deixar Dinheiro na Mesa
+                    </span>
+                </div>
+                <h1 style={{
+                    fontSize: '48px',
+                    fontWeight: '800',
+                    fontFamily: '"Fraunces", serif',
+                    color: '#0F0E0C',
+                    letterSpacing: '-0.02em',
+                    lineHeight: '1.1',
+                    margin: 0
+                }}>
                     A precisão que seu caixa precisa, <br />
-                    <span className="text-green-primary">no preço que você pode pagar.</span>
+                    <span style={{ color: '#1A5C3A' }}>no preço que você pode pagar.</span>
                 </h1>
-                <p className="text-xl text-text-secondary">
+                <p style={{ fontSize: '20px', color: '#6B7280', lineHeight: '1.5', margin: 0 }}>
                     Escolha o plano ideal para a fase atual do seu negócio e comece a lucrar mais hoje mesmo.
                 </p>
             </div>
 
             {/* Plans Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '32px',
+                alignItems: 'start'
+            }}>
                 {plans.map((plan) => (
                     <PlanCard key={plan.id} plan={plan} />
                 ))}
             </div>
 
             {/* Trust Badges */}
-            <div className="pt-20 border-t border-border grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div style={{
+                paddingTop: '64px',
+                borderTop: '1px solid #E5E7EB',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr)',
+                gap: '32px'
+            }}>
                 <TrustItem icon={ShieldCheck} title="Segurança Total" desc="Seus dados financeiros são criptografados." />
                 <TrustItem icon={Rocket} title="Ativação Imediata" desc="Pague e comece a usar as funções Pro na hora." />
                 <TrustItem icon={Smartphone} title="Multiplataforma" desc="Acesse pelo celular, tablet ou computador." />
@@ -95,87 +132,173 @@ export default function Upgrade() {
             </div>
 
             {/* FAQ Preview */}
-            <div className="bg-green-light rounded-3xl p-12 flex flex-col md:flex-row items-center justify-between gap-8">
-                <div className="max-w-md space-y-4">
-                    <h3 className="text-3xl font-display font-bold text-green-primary">Ainda com dúvida?</h3>
-                    <p className="text-green-primary/80">Nossa equipe de especialistas em finanças está pronta para te ajudar a escolher o melhor caminho.</p>
+            <div style={{
+                backgroundColor: 'rgba(26, 92, 58, 0.05)',
+                borderRadius: '32px',
+                padding: '56px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: '32px',
+                border: '1px solid rgba(26, 92, 58, 0.1)'
+            }}>
+                <div style={{ maxWidth: '450px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <h3 style={{ fontSize: '32px', fontWeight: '800', fontFamily: '"Fraunces", serif', color: '#1A5C3A', margin: 0 }}>Ainda com dúvida?</h3>
+                    <p style={{ fontSize: '18px', color: '#1A5C3A', opacity: 0.8, margin: 0 }}>Nossa equipe de especialistas em finanças está pronta para te ajudar a escolher o melhor caminho.</p>
                 </div>
-                <Button size="lg" className="h-16 px-10 gap-3 text-lg shadow-xl shadow-green-primary/20">
-                    Chamar no WhatsApp <ArrowRight className="w-5 h-5" />
-                </Button>
+                <button style={{
+                    padding: '20px 40px',
+                    backgroundColor: '#1A5C3A',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '16px',
+                    fontSize: '18px',
+                    fontWeight: '700',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    boxShadow: '0 20px 40px rgba(26, 92, 58, 0.2)',
+                    transition: 'all 0.2s ease'
+                }}
+                    onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                    onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
+                >
+                    Chamar no WhatsApp <ArrowRight size={20} />
+                </button>
             </div>
         </div>
     );
 }
 
 function PlanCard({ plan }) {
+    const isHighlighted = plan.highlight;
     return (
-        <Card className={cn(
-            "relative p-8 transition-all hover:-translate-y-2 duration-300",
-            plan.highlight ? "border-2 border-green-primary shadow-2xl shadow-green-primary/10 ring-8 ring-green-primary/5 scale-105 z-10" : ""
-        )}>
-            {plan.highlight && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-primary text-white text-xs font-black uppercase px-4 py-1.5 rounded-full tracking-widest shadow-lg">
+        <div style={{
+            position: 'relative',
+            padding: '40px',
+            backgroundColor: '#FFFFFF',
+            border: isHighlighted ? '2px solid #1A5C3A' : '1px solid #E5E7EB',
+            borderRadius: '24px',
+            boxShadow: isHighlighted ? '0 30px 60px rgba(26, 92, 58, 0.15)' : '0 4px 6px rgba(0,0,0,0.02)',
+            transform: isHighlighted ? 'scale(1.05)' : 'none',
+            zIndex: isHighlighted ? 10 : 1,
+            transition: 'all 0.3s ease'
+        }}>
+            {isHighlighted && (
+                <div style={{
+                    position: 'absolute',
+                    top: '0',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    backgroundColor: '#1A5C3A',
+                    color: '#FFFFFF',
+                    fontSize: '11px',
+                    fontWeight: '900',
+                    textTransform: 'uppercase',
+                    padding: '6px 20px',
+                    borderRadius: '50px',
+                    letterSpacing: '0.15em',
+                    boxShadow: '0 10px 20px rgba(26, 92, 58, 0.2)'
+                }}>
                     Recomendado
                 </div>
             )}
 
-            <div className="space-y-6">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                 <div>
-                    <h3 className="text-2xl font-bold text-text-primary">{plan.name}</h3>
-                    <div className="flex items-baseline gap-1 mt-4">
-                        <span className="text-4xl font-display font-bold text-text-primary">{plan.price}</span>
-                        <span className="text-text-secondary font-medium">{plan.period}</span>
+                    <h3 style={{ fontSize: '24px', fontWeight: '800', color: '#0F0E0C', margin: 0 }}>{plan.name}</h3>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginTop: '16px' }}>
+                        <span style={{ fontSize: '40px', fontWeight: '800', fontFamily: '"Fraunces", serif', color: '#0F0E0C' }}>{plan.price}</span>
+                        {plan.period && <span style={{ fontSize: '16px', fontWeight: '600', color: '#6B7280' }}>{plan.period}</span>}
                     </div>
-                    <p className="text-text-secondary mt-4 text-sm leading-relaxed">{plan.desc}</p>
+                    <p style={{ fontSize: '14px', color: '#6B7280', marginTop: '16px', lineHeight: '1.6', margin: 0 }}>{plan.desc}</p>
                 </div>
 
-                <div className="space-y-4 pt-6 border-t border-border">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingTop: '32px', borderTop: '1px solid #E5E7EB' }}>
                     {plan.features.map((feature) => (
-                        <div key={feature} className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-green-light flex items-center justify-center shrink-0 mt-0.5">
-                                <Check className="w-3 h-3 text-green-primary stroke-[3px]" />
+                        <div key={feature} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                            <div style={{
+                                width: '20px',
+                                height: '20px',
+                                borderRadius: '50%',
+                                backgroundColor: 'rgba(26, 92, 58, 0.1)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexShrink: 0,
+                                marginTop: '2px'
+                            }}>
+                                <Check size={12} color="#1A5C3A" strokeWidth={3} style={{ margin: 'auto' }} />
                             </div>
-                            <span className="text-sm font-medium text-text-primary">{feature}</span>
+                            <span style={{ fontSize: '14px', fontWeight: '600', color: '#0F0E0C' }}>{feature}</span>
                         </div>
                     ))}
                 </div>
 
-                <Button
-                    variant={plan.variant}
-                    className={cn(
-                        "w-full h-14 text-lg gap-2",
-                        plan.current && "opacity-50 cursor-default"
-                    )}
+                <PrimaryButton
+                    label={plan.cta}
+                    variant={plan.variant === 'primary' ? 'primary' : 'secondary'}
                     disabled={plan.current}
-                >
-                    {plan.cta} {!plan.current && <ArrowRight className="w-4 h-4" />}
-                </Button>
+                    icon={!plan.current && <ArrowRight size={18} />}
+                />
             </div>
-        </Card>
+        </div>
+    );
+}
+
+function PrimaryButton({ onClick, label, variant = 'primary', disabled = false, icon }) {
+    const isPrimary = variant === 'primary';
+    const [isHovered, setIsHovered] = useState(false);
+    return (
+        <button
+            disabled={disabled}
+            onClick={onClick}
+            onMouseEnter={() => !disabled && setIsHovered(true)}
+            onMouseLeave={() => !disabled && setIsHovered(false)}
+            style={{
+                width: '100%',
+                padding: '16px 24px',
+                fontSize: '16px',
+                fontWeight: '700',
+                color: isPrimary ? '#FFFFFF' : (disabled ? '#9CA3AF' : '#1A5C3A'),
+                backgroundColor: isPrimary
+                    ? (isHovered ? '#154a2f' : '#1A5C3A')
+                    : (isHovered ? 'rgba(26, 92, 58, 0.1)' : 'rgba(26, 92, 58, 0.05)'),
+                border: isPrimary ? 'none' : `1px solid ${disabled ? '#E5E7EB' : 'rgba(26, 92, 58, 0.2)'}`,
+                borderRadius: '14px',
+                cursor: disabled ? 'default' : 'pointer',
+                opacity: disabled ? 0.6 : 1,
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                fontFamily: '"Plus Jakarta Sans", sans-serif'
+            }}
+        >
+            {label} {icon}
+        </button>
     );
 }
 
 function TrustItem({ icon: Icon, title, desc }) {
     return (
-        <div className="flex flex-col items-center text-center space-y-3">
-            <div className="w-12 h-12 bg-background rounded-2xl flex items-center justify-center text-text-secondary">
-                <Icon className="w-6 h-6" />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '12px' }}>
+            <div style={{
+                width: '56px',
+                height: '56px',
+                backgroundColor: '#F9FAFB',
+                borderRadius: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#6B7280'
+            }}>
+                <Icon size={24} />
             </div>
-            <h4 className="font-bold text-text-primary">{title}</h4>
-            <p className="text-xs text-text-secondary leading-relaxed">{desc}</p>
+            <h4 style={{ fontSize: '16px', fontWeight: '700', color: '#0F0E0C', margin: 0 }}>{title}</h4>
+            <p style={{ fontSize: '13px', color: '#6B7280', lineHeight: '1.5', margin: 0 }}>{desc}</p>
         </div>
-    );
-}
-
-function Badge({ children, variant, className }) {
-    const styles = {
-        warning: 'bg-amber text-white border-none',
-        default: 'bg-gray-100 text-gray-700',
-    };
-    return (
-        <span className={cn("px-2.5 py-0.5 rounded-full text-xs font-semibold inline-block", styles[variant] || styles.default, className)}>
-            {children}
-        </span>
     );
 }

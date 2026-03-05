@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
-import Sidebar from './components/ui/Sidebar';
+import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Calculator from './pages/Calculator';
 import Onboarding from './pages/Onboarding';
@@ -10,61 +10,57 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Landing from './pages/Landing';
 import BusinessProfile from './pages/BusinessProfile';
-import { cn } from './lib/utils';
+import ForgotPassword from './pages/ForgotPassword';
 
 export default function App() {
   const { isAuth, hasCompletedOnboarding } = useAuthStore();
   const location = useLocation();
 
   // Navigation Logic
-  const publicPaths = ['/login', '/register', '/'];
+  const publicPaths = ['/login', '/register', '/', '/forgot-password'];
   const isPublicPath = publicPaths.includes(location.pathname);
 
+  // Auth Guard
   if (!isAuth && !isPublicPath) {
     return <Navigate to="/login" replace />;
   }
 
+  // Auto-redirect if trying to visit login/register while authenticated
   if (isAuth && (location.pathname === '/login' || location.pathname === '/register')) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  if (isAuth && !hasCompletedOnboarding && location.pathname !== '/onboarding') {
+  // Onboarding Guard - Only redirect if NOT already going to onboarding or business-profile
+  // Assuming business-profile is also part of the setup flow
+  if (isAuth && !hasCompletedOnboarding &&
+    location.pathname !== '/onboarding' &&
+    location.pathname !== '/business-profile') {
     return <Navigate to="/onboarding" replace />;
   }
 
-  // Rotas públicas renderizam sem wrapper de layout
-  if (isPublicPath) {
-    return (
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    );
-  }
-
-  // Sidebar visibility
-  const hideSidebarPaths = ['/onboarding'];
-  const showSidebar = isAuth && hasCompletedOnboarding && !hideSidebarPaths.includes(location.pathname);
-
   return (
-    <div className="min-h-screen bg-background text-text-primary selection:bg-green-primary/10">
-      {showSidebar && <Sidebar />}
-      <main className={cn(
-        "transition-all duration-300 min-h-screen",
-        showSidebar ? 'pl-64' : ''
-      )}>
-        <Routes>
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/calculator" element={<Calculator />} />
-          <Route path="/calculator/:id" element={<Calculator />} />
-          <Route path="/analysis/:id" element={<Analysis />} />
-          <Route path="/upgrade" element={<Upgrade />} />
-          <Route path="/business-profile" element={<BusinessProfile />} />
-          <Route path="*" element={<Navigate to={isAuth ? "/dashboard" : "/"} replace />} />
-        </Routes>
-      </main>
-    </div>
+    <Routes>
+      {/* ── Rotas STANDALONE (sem sidebar, sem Layout) ── */}
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+
+      {/* Rotas Autenticadas mas Standalone (ex: configuração e setup) */}
+      <Route path="/onboarding" element={<Onboarding />} />
+      <Route path="/business-profile" element={<BusinessProfile />} />
+
+      {/* ── Rotas COM Layout (sidebar inclusa) ── */}
+      <Route element={<Layout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/calculator" element={<Calculator />} />
+        <Route path="/calculator/:id" element={<Calculator />} />
+        <Route path="/analysis/:id" element={<Analysis />} />
+        <Route path="/upgrade" element={<Upgrade />} />
+      </Route>
+
+      {/* Rota Padrão / 404 */}
+      <Route path="*" element={<Navigate to={isAuth ? "/dashboard" : "/"} replace />} />
+    </Routes>
   );
 }
