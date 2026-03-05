@@ -25,6 +25,9 @@
 @layer base {
   body {
     @apply bg-background text-text-primary font-body;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -32,4 +35,11 @@
   .card-premium {
     @apply bg-surface border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200;
   }
+}
+
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
 }

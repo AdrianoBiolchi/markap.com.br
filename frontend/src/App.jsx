@@ -32,8 +32,19 @@ export default function App() {
     return <Navigate to="/onboarding" replace />;
   }
 
+  // Rotas públicas renderizam sem wrapper de layout
+  if (isPublicPath) {
+    return (
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    );
+  }
+
   // Sidebar visibility
-  const hideSidebarPaths = ['/onboarding', '/login', '/register', '/'];
+  const hideSidebarPaths = ['/onboarding'];
   const showSidebar = isAuth && hasCompletedOnboarding && !hideSidebarPaths.includes(location.pathname);
 
   return (
@@ -44,18 +55,13 @@ export default function App() {
         showSidebar ? 'pl-64' : ''
       )}>
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/onboarding" element={<Onboarding />} />
-
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/calculator/:id" element={<Calculator />} />
           <Route path="/analysis/:id" element={<Analysis />} />
           <Route path="/upgrade" element={<Upgrade />} />
           <Route path="/business-profile" element={<BusinessProfile />} />
-
           <Route path="*" element={<Navigate to={isAuth ? "/dashboard" : "/"} replace />} />
         </Routes>
       </main>
