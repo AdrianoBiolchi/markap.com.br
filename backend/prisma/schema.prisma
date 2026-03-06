@@ -37,6 +37,9 @@ model BusinessProfile {
   marketingCost         Float    @default(0)  // Marketing fixo mensal
   otherFixedCosts       Float    @default(0)  // Outros custos fixos
   
+  // Segmento do negócio
+  segment               String?  @default("outro")
+  
   // Faturamento previsto
   expectedMonthlyRevenue Float   @default(0)  // Faturamento total previsto/mês
   
@@ -46,6 +49,13 @@ model BusinessProfile {
   // Calculado automaticamente
   fixedCostPercentage   Float    @default(0)  // CF% calculado
   
+  // Metas financeiras
+  monthlyProfitGoal     Float?   @default(0)
+  monthlyRevenueGoal    Float?   @default(0)
+  
+  // Customizações de Benchmarking
+  customMarketMargin    Float?   @default(0) // Margem de referência do usuário
+
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 }

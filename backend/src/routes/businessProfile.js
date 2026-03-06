@@ -36,7 +36,15 @@ router.get('/', auth, async (req, res) => {
  * POST /api/business-profile
  * Creates or updates the user's business profile and calculates the fixed cost percentage.
  */
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, handleUpsert);
+
+/**
+ * PUT /api/business-profile
+ * Same as POST — for REST consistency.
+ */
+router.put('/', auth, handleUpsert);
+
+async function handleUpsert(req, res) {
     const userId = req.user.id;
     const {
         monthlyRent,
@@ -48,7 +56,11 @@ router.post('/', auth, async (req, res) => {
         marketingCost,
         otherFixedCosts,
         expectedMonthlyRevenue,
-        pricingMode
+        pricingMode,
+        segment,
+        customMarketMargin,
+        monthlyProfitGoal,
+        monthlyRevenueGoal
     } = req.body;
 
     try {
@@ -66,17 +78,21 @@ router.post('/', auth, async (req, res) => {
         const fixedCostPercentage = fRevenue > 0 ? (totalFixedCosts / fRevenue) * 100 : 0;
 
         const profileData = {
-            monthlyRent: Number(monthlyRent),
-            ownerSalary: Number(ownerSalary),
-            employeesCost: Number(employeesCost),
-            utilitiesCost: Number(utilitiesCost),
-            accountingCost: Number(accountingCost),
-            systemsCost: Number(systemsCost),
-            marketingCost: Number(marketingCost),
-            otherFixedCosts: Number(otherFixedCosts),
+            monthlyRent: Number(monthlyRent) || 0,
+            ownerSalary: Number(ownerSalary) || 0,
+            employeesCost: Number(employeesCost) || 0,
+            utilitiesCost: Number(utilitiesCost) || 0,
+            accountingCost: Number(accountingCost) || 0,
+            systemsCost: Number(systemsCost) || 0,
+            marketingCost: Number(marketingCost) || 0,
+            otherFixedCosts: Number(otherFixedCosts) || 0,
             expectedMonthlyRevenue: fRevenue,
-            pricingMode,
-            fixedCostPercentage
+            pricingMode: pricingMode || 'SIMPLE',
+            fixedCostPercentage,
+            segment: segment || 'outro',
+            customMarketMargin: Number(customMarketMargin) || 0,
+            monthlyProfitGoal: Number(monthlyProfitGoal) || 0,
+            monthlyRevenueGoal: Number(monthlyRevenueGoal) || 0,
         };
 
         const profile = await prisma.businessProfile.upsert({
@@ -93,7 +109,7 @@ router.post('/', auth, async (req, res) => {
         console.error('Error updating business profile:', err);
         res.status(500).json({ error: 'Server error' });
     }
-});
+}
 
 /**
  * GET /api/business-profile/cf-percent

@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
-import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Calculator from './pages/Calculator';
 import Onboarding from './pages/Onboarding';
@@ -11,6 +10,7 @@ import Register from './pages/Register';
 import Landing from './pages/Landing';
 import BusinessProfile from './pages/BusinessProfile';
 import ForgotPassword from './pages/ForgotPassword';
+import Settings from './pages/Settings';
 
 export default function App() {
   const { isAuth, hasCompletedOnboarding } = useAuthStore();
@@ -31,7 +31,6 @@ export default function App() {
   }
 
   // Onboarding Guard - Only redirect if NOT already going to onboarding or business-profile
-  // Assuming business-profile is also part of the setup flow
   if (isAuth && !hasCompletedOnboarding &&
     location.pathname !== '/onboarding' &&
     location.pathname !== '/business-profile') {
@@ -40,26 +39,25 @@ export default function App() {
 
   return (
     <Routes>
-      {/* ── Rotas STANDALONE (sem sidebar, sem Layout) ── */}
+      {/* ── PÚBLICAS — split screen, sem shell ── */}
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      {/* Rotas Autenticadas mas Standalone (ex: configuração e setup) */}
+      {/* ── SETUP — sem shell (são primeiros passos, fluxo limpo) ── */}
       <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/business-profile" element={<BusinessProfile />} />
 
-      {/* ── Rotas COM Layout (sidebar inclusa) ── */}
-      <Route element={<Layout />}>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/calculator" element={<Calculator />} />
-        <Route path="/calculator/:id" element={<Calculator />} />
-        <Route path="/analysis/:id" element={<Analysis />} />
-        <Route path="/upgrade" element={<Upgrade />} />
-      </Route>
+      {/* ── APP — todas com AppShell (envolvido dentro das próprias telas) ── */}
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/calculator" element={<Calculator />} />
+      <Route path="/calculator/:id" element={<Calculator />} />
+      <Route path="/analysis" element={<Analysis />} />
+      <Route path="/analysis/:id" element={<Analysis />} />
+      <Route path="/upgrade" element={<Upgrade />} />
+      <Route path="/settings" element={<Settings />} />
 
-      {/* Rota Padrão / 404 */}
       <Route path="*" element={<Navigate to={isAuth ? "/dashboard" : "/"} replace />} />
     </Routes>
   );

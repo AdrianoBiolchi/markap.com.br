@@ -1,26 +1,29 @@
 export const C = {
-    paper: "#F7F5EF",
-    paperWarm: "#EFEDE5",
-    paperDeep: "#E5E2D8",
-    white: "#FFFFFF",
-    ink: "#0E1810",
-    inkMid: "#2E4535",
-    inkLight: "#5A7A64",
-    inkMuted: "#8FA898",
-    green: "#1B3829",
-    greenMid: "#2D6A4F",
-    greenFresh: "#52B788",
-    greenPale: "#D8F3DC",
-    greenSage: "#A8C5A0",
-    yellow: "#E8F542",
-    yellowDeep: "#C4CF00",
-    yellowPale: "#F5FAA0",
-    yellowWarm: "#F9F7D2",
-    red: "#D62828",
-    redMid: "#E63946",
-    redPale: "#FDECEA",
-    orange: "#F4845F",
-    orangePale: "#FEF0EB",
-    border: "rgba(14,24,16,0.08)",
-    borderMid: "rgba(14,24,16,0.14)",
-};
+    // Verdes
+    green: '#1A5C3A',   // primary — botões, CTAs, sidebar
+    greenMid: '#2E7D52',   // hover states
+    greenFresh: '#22C55E',   // badges "saudável"
+    greenLight: '#DCFCE7',   // backgrounds suaves
+    greenPale: '#F0FDF4',   // fundo de inputs focados
+
+    // Neutros
+    ink: '#0F0E0C',   // texto principal
+    inkMid: '#374151',   // texto secundário
+    inkLight: '#64748B',   // labels, hints
+    inkMuted: '#9CA3AF',   // placeholders, metadados
+    white: '#FFFFFF',
+    paper: '#F7F7F7',   // background geral de páginas
+    paperWarm: '#F4F3EF',   // fundo de cards
+    border: '#E2E8F0',   // bordas de inputs e cards
+
+    // Acentos
+    yellow: '#FFF176',   // destaque principal Markap
+    yellowDeep: '#E8F542',   // hover do amarelo
+    yellowWarm: '#FEFCE8',   // fundo amarelo suave
+
+    // Status
+    redMid: '#D62828',
+    redPale: '#FEF2F2',
+    orange: '#F59E0B',
+    orangePale: '#FFFBEB',
+}
