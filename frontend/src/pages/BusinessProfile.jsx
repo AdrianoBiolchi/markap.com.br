@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import api from '../api'
 import AppShell from '../components/AppShell'
 import { SEGMENT_BENCHMARKS } from '../data/segmentBenchmarks'
+import { NumericField } from '../components/ui/PremiumInputs'
 
 const FONTS = `
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
@@ -108,7 +109,13 @@ export default function BusinessProfile() {
         pricingMode: 'SIMPLE',
         segment: 'outro',
         customMarketMargin: 0,
+        customMarginGoal: 0,
         monthlyProfitGoal: 0,
+        monthlyRevenueGoal: 0,
+        taxRate: 0,
+        cardFee: 0,
+        commission: 0,
+        marketplaceFee: 0,
     })
 
     const [saving, setSaving] = useState(false)
@@ -132,7 +139,13 @@ export default function BusinessProfile() {
                     pricingMode: data.pricingMode || 'SIMPLE',
                     segment: data.segment || 'outro',
                     customMarketMargin: data.customMarketMargin || 0,
+                    customMarginGoal: data.customMarginGoal || 0,
                     monthlyProfitGoal: data.monthlyProfitGoal || 0,
+                    monthlyRevenueGoal: data.monthlyRevenueGoal || 0,
+                    taxRate: data.taxRate || 0,
+                    cardFee: data.cardFee || 0,
+                    commission: data.commission || 0,
+                    marketplaceFee: data.marketplaceFee || 0,
                 }))
             } catch (e) {
                 console.error('Erro ao carregar perfil:', e)
@@ -340,7 +353,43 @@ export default function BusinessProfile() {
                     )}
                 </div>
 
-                {/* SEÇÃO 3: Modo de Precificação */}
+                {/* SEÇÃO 3: Deduções Variáveis (Globais) */}
+                <div style={{
+                    background: '#FFFFFF', border: '1px solid #E2E8F0',
+                    borderRadius: 20, padding: '24px', marginBottom: 20,
+                }}>
+                    <div style={{
+                        display: 'flex', alignItems: 'center', gap: 12,
+                        marginBottom: 24, paddingBottom: 16,
+                        borderBottom: '2px solid #F0FDF4',
+                    }}>
+                        <div style={{
+                            width: 32, height: 32, borderRadius: '50%',
+                            background: '#1A5C3A', color: '#FFF176',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 14,
+                        }}>3</div>
+                        <h3 style={{ fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 20, color: '#0F0E0C', letterSpacing: '-0.02em' }}>
+                            Deduções Variáveis (Impostos e Taxas)
+                        </h3>
+                    </div>
+
+                    <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
+                        Quais são as taxas que incidem sobre toda venda?
+                    </p>
+                    <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: '#9CA3AF', marginBottom: 20 }}>
+                        No modo de precificação "Simples", esses percentuais são aplicados automaticamente em todos os produtos.
+                    </p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px 24px' }}>
+                        <NumericField label="Impostos (Ex: Simples Nacional)" value={form.taxRate} onChange={set('taxRate')} suffix="%" />
+                        <NumericField label="Taxas de Cartão/Intermediador" value={form.cardFee} onChange={set('cardFee')} suffix="%" />
+                        <NumericField label="Comissão / Marketplace" value={form.commission} onChange={set('commission')} suffix="%" />
+                        <NumericField label="Outras Taxas (Ex: Frete % global)" value={form.marketplaceFee} onChange={set('marketplaceFee')} suffix="%" />
+                    </div>
+                </div>
+
+                {/* SEÇÃO 4: Modo de Precificação */}
                 <div style={{
                     background: '#FFFFFF', border: '1px solid #E2E8F0',
                     borderRadius: 20, padding: '24px', marginBottom: 20,
@@ -354,7 +403,7 @@ export default function BusinessProfile() {
                             background: '#1A5C3A', color: '#FFF176',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 14,
-                        }}>3</div>
+                        }}>4</div>
                         <h3 style={{ fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 20, color: '#0F0E0C', letterSpacing: '-0.02em' }}>
                             Modo de Precificação
                         </h3>
@@ -423,10 +472,10 @@ export default function BusinessProfile() {
                     </div>
                 </div>
 
-                {/* Seção 4 — Segmento do Negócio */}
+                {/* Seção 5 — Segmento do Negócio */}
                 <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: 20, padding: '24px', marginBottom: 32 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, paddingBottom: 16, borderBottom: '2px solid #F0FDF4' }}>
-                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#1A5C3A', color: '#FFF176', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 14 }}>4</div>
+                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#1A5C3A', color: '#FFF176', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 14 }}>5</div>
                         <div>
                             <h3 style={{ fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 20, color: '#0F0E0C', letterSpacing: '-0.02em' }}>Segmento do Negócio</h3>
                             <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: '#9CA3AF', marginTop: 2 }}>
@@ -489,10 +538,10 @@ export default function BusinessProfile() {
                     </div>
                 </div>
 
-                {/* Seção 5 — Personalização de Metas */}
+                {/* Seção 6 — Personalização de Metas */}
                 <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: 20, padding: '24px', marginBottom: 32 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, paddingBottom: 16, borderBottom: '2px solid #F0FDF4' }}>
-                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#1A5C3A', color: '#FFF176', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 14 }}>5</div>
+                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#1A5C3A', color: '#FFF176', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 14 }}>6</div>
                         <div>
                             <h3 style={{ fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 20, color: '#0F0E0C', letterSpacing: '-0.02em' }}>Personalizar Metas</h3>
                             <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: '#9CA3AF', marginTop: 2 }}>
@@ -504,27 +553,59 @@ export default function BusinessProfile() {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
                         <div>
                             <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 700, color: '#374151', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                Minha Margem Alvo (%)
+                                Meta de Margem Líquida (%)
                             </p>
-                            <div style={{ position: 'relative' }}>
-                                <input
-                                    type="number"
-                                    value={form.customMarketMargin}
-                                    onChange={e => setForm(f => ({ ...f, customMarketMargin: Number(e.target.value) }))}
-                                    placeholder="Ex: 35"
-                                    style={{
-                                        width: "100%", padding: "12px 14px",
-                                        fontFamily: "'DM Mono', monospace", fontSize: 15,
-                                        color: '#0F0E0C', background: '#FFFFFF',
-                                        border: `1.5px solid #E2E8F0`, borderRadius: 10,
-                                        outline: "none",
-                                    }}
-                                />
-                                <span style={{ position: 'absolute', right: 14, top: 12, color: '#9CA3AF', fontSize: 13 }}>%</span>
-                            </div>
-                            <p style={{ fontSize: 11, color: '#9CA3AF', marginTop: 6, lineHeight: 1.4 }}>
-                                Se maior que zero, substitui a média do segmento no Markapômetro.
-                            </p>
+                            {(() => {
+                                const segBenchmark = SEGMENT_BENCHMARKS[form.segment]?.thresholds?.atencao || 25;
+                                const activeGoal = form.customMarginGoal > 0 ? form.customMarginGoal : segBenchmark;
+                                const goalColor = activeGoal < 15 ? '#D62828' : activeGoal < 25 ? '#F59E0B' : '#2E7D52';
+                                return (
+                                    <div style={{ background: '#F7F7F7', borderRadius: 14, padding: '16px 18px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                                            <div>
+                                                <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 36, fontWeight: 500, color: goalColor, lineHeight: 1 }}>
+                                                    {activeGoal}%
+                                                </p>
+                                                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, color: '#9CA3AF', marginTop: 4 }}>
+                                                    {form.customMarginGoal > 0 ? 'Meta personalizada' : `Benchmark: ${SEGMENT_BENCHMARKS[form.segment]?.label || 'geral'}`}
+                                                </p>
+                                            </div>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'flex-end' }}>
+                                                {[{ l: 'Mínimo', v: 10, c: '#D62828' }, { l: 'Atenção', v: 20, c: '#F59E0B' }, { l: 'Saudável', v: 30, c: '#2E7D52' }].map(ref => (
+                                                    <div key={ref.l} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                                                        <span style={{ fontSize: 9, color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{ref.l}</span>
+                                                        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, fontWeight: 500, color: ref.c }}>{ref.v}%</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="range" min="5" max="60" step="1"
+                                            value={activeGoal}
+                                            onChange={e => setForm(f => ({ ...f, customMarginGoal: Number(e.target.value) }))}
+                                            style={{ width: '100%', accentColor: goalColor, cursor: 'pointer', marginBottom: 10 }}
+                                        />
+                                        <div style={{ display: 'flex', height: 4, borderRadius: 99, overflow: 'hidden', marginBottom: 10 }}>
+                                            <div style={{ flex: 1, background: '#D62828', opacity: 0.4 }} />
+                                            <div style={{ flex: 1, background: '#F59E0B', opacity: 0.4 }} />
+                                            <div style={{ flex: 1, background: '#22C55E', opacity: 0.4 }} />
+                                        </div>
+                                        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                                            <button
+                                                onClick={() => setForm(f => ({ ...f, customMarginGoal: 0 }))}
+                                                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 600, padding: '5px 10px', borderRadius: 7, border: '1.5px solid #E2E8F0', background: form.customMarginGoal === 0 ? '#1A5C3A' : '#fff', color: form.customMarginGoal === 0 ? '#fff' : '#374151', cursor: 'pointer' }}
+                                            >
+                                                Benchmark ({segBenchmark}%)
+                                            </button>
+                                            {[15, 20, 25, 30, 35].map(v => (
+                                                <button key={v} onClick={() => setForm(f => ({ ...f, customMarginGoal: v }))}
+                                                    style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, padding: '5px 10px', borderRadius: 7, border: '1.5px solid #E2E8F0', background: form.customMarginGoal === v ? '#1A5C3A' : '#fff', color: form.customMarginGoal === v ? '#fff' : '#374151', cursor: 'pointer' }}
+                                                >{v}%</button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })()}
                         </div>
                         <div>
                             <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 700, color: '#374151', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -536,9 +617,22 @@ export default function BusinessProfile() {
                                 onChange={set('monthlyProfitGoal')}
                             />
                             <p style={{ fontSize: 11, color: '#9CA3AF', marginTop: 6, lineHeight: 1.4 }}>
-                                Crucial para o cálculo do ponto de equilíbrio.
+                                Crucial para o cálculo do lucro total no Dashboard.
                             </p>
                         </div>
+                    </div>
+                    <div style={{ marginTop: 24 }}>
+                        <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 700, color: '#374151', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                            Meta de Faturamento Mensal (R$)
+                        </p>
+                        <CurrencyInput
+                            icon="💰"
+                            value={form.monthlyRevenueGoal}
+                            onChange={set('monthlyRevenueGoal')}
+                        />
+                        <p style={{ fontSize: 11, color: '#9CA3AF', marginTop: 6, lineHeight: 1.4 }}>
+                            Sua meta de vendas brutas para este mês.
+                        </p>
                     </div>
                 </div>
 

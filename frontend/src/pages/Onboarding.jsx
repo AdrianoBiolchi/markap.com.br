@@ -46,12 +46,12 @@ export default function Onboarding() {
     };
 
     const handleFinish = async () => {
-        await completeOnboarding();
+        await completeOnboarding(answers);
         navigate('/business-profile');
     };
 
     const handleSkip = async () => {
-        await completeOnboarding();
+        await completeOnboarding(null);
         navigate('/dashboard');
     };
 

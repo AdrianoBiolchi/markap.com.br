@@ -84,12 +84,17 @@ router.post('/login', async (req, res) => {
 
 // Update onboarding status
 router.post('/complete-onboarding', async (req, res) => {
-    const { userId } = req.body;
+    const { userId, businessType, taxRegime, onboardingGoal } = req.body;
 
     try {
         await prisma.user.update({
             where: { id: userId },
-            data: { onboarded: true }
+            data: {
+                onboarded: true,
+                businessType,
+                taxRegime,
+                onboardingGoal
+            }
         });
         res.json({ success: true });
     } catch (err) {

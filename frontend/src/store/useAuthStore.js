@@ -44,13 +44,24 @@ export const useAuthStore = create((set) => ({
         set({ user: null, isAuth: false, hasCompletedOnboarding: false });
     },
 
-    completeOnboarding: async () => {
+    completeOnboarding: async (answers) => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) return;
 
         try {
-            await api.post('/auth/complete-onboarding', { userId: user.id });
-            const updatedUser = { ...user, has_completed_onboarding: true };
+            await api.post('/auth/complete-onboarding', {
+                userId: user.id,
+                businessType: answers?.type,
+                taxRegime: answers?.regime,
+                onboardingGoal: answers?.goal
+            });
+            const updatedUser = {
+                ...user,
+                has_completed_onboarding: true,
+                businessType: answers?.type,
+                taxRegime: answers?.regime,
+                onboardingGoal: answers?.goal
+            };
             localStorage.setItem('user', JSON.stringify(updatedUser));
             set({ hasCompletedOnboarding: true, user: updatedUser });
         } catch (err) {

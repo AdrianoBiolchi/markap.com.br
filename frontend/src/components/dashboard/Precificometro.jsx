@@ -34,7 +34,8 @@ const arc = (from, sweep, r) => {
     return `M ${s.x.toFixed(2)} ${s.y.toFixed(2)} A ${r} ${r} 0 ${sweep > 180 ? 1 : 0} 1 ${e.x.toFixed(2)} ${e.y.toFixed(2)}`;
 };
 
-export default function Markapometro({ score }) {
+// size="small" reduz o gauge para caber no painel lateral (width 272px)
+export default function Markapometro({ score, size = "default" }) {
     const [anim, setAnim] = useState(0);
 
     useEffect(() => {
@@ -50,6 +51,11 @@ export default function Markapometro({ score }) {
         const id = setTimeout(() => requestAnimationFrame(run), 300);
         return () => clearTimeout(id);
     }, [score]);
+
+    const isSmall = size === "small";
+    const svgW = isSmall ? 210 : 260;
+    const svgH = isSmall ? 155 : 190;
+    const scale = isSmall ? 210 / 260 : 1;
 
     const filled = (anim / 100) * TOTAL_DEG;
     const tip = pt(START_DEG + filled, R - 14);
@@ -68,23 +74,22 @@ export default function Markapometro({ score }) {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}>
-
-            {/* GAUGE SVG */}
-            <svg width={260} height={190} viewBox="0 0 260 190" style={{ overflow: "visible", display: "block" }}>
-
+            <svg
+                width={svgW}
+                height={svgH}
+                viewBox="0 0 260 190"
+                style={{ overflow: "visible", display: "block", transform: `scale(${scale})`, transformOrigin: "top center" }}
+            >
                 {/* Trilha */}
                 <path d={arc(START_DEG, TOTAL_DEG, R)} fill="none" stroke={C.paperDeep} strokeWidth={14} strokeLinecap="round" />
-
                 {/* Zonas */}
                 {zones.map((z, i) => (
                     <path key={i} d={arc(z.from, z.sweep, R)} fill="none" stroke={z.c} strokeWidth={14} strokeLinecap="round" opacity={0.22} />
                 ))}
-
                 {/* Progresso */}
                 {filled > 0 && (
                     <path d={arc(START_DEG, filled, R)} fill="none" stroke={color} strokeWidth={14} strokeLinecap="round" />
                 )}
-
                 {/* Ticks */}
                 {ticks.map((tk, i) => (
                     <line key={i}
@@ -93,7 +98,6 @@ export default function Markapometro({ score }) {
                         stroke={C.inkMuted} strokeWidth={1.5}
                     />
                 ))}
-
                 {/* Agulha */}
                 <line
                     x1={CX} y1={CY}
@@ -102,48 +106,16 @@ export default function Markapometro({ score }) {
                 />
                 <circle cx={CX} cy={CY} r={9} fill={C.ink} />
                 <circle cx={CX} cy={CY} r={4} fill={C.paper} />
-
-                {/* NÚMERO — abaixo do pivô, no espaço vazio da base */}
+                {/* NÚMERO — abaixo do pivô */}
                 <text
                     x={CX}
                     y={CY + 52}
                     textAnchor="middle"
-                    style={{
-                        fontFamily: "'Fraunces', serif",
-                        fontSize: 32,
-                        fontWeight: 800,
-                        fill: C.ink,
-                    }}
+                    style={{ fontFamily: "'Fraunces', serif", fontSize: 32, fontWeight: 800, fill: C.ink }}
                 >
                     {anim}%
                 </text>
             </svg>
-
-            {/* LABEL — HTML externo */}
-            <p style={{
-                fontFamily: "'Instrument Sans', sans-serif",
-                fontSize: 9,
-                fontWeight: 700,
-                color: C.inkMuted,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                margin: "2px 0 14px",
-                textAlign: "center",
-            }}>
-                Saúde dos Preços
-            </p>
-
-            {/* LEGENDA — HTML externo */}
-            <div style={{ display: "flex", justifyContent: "center", gap: 20 }}>
-                {[["Risco", C.redMid], ["Atenção", C.orange], ["Saudável", C.greenFresh]].map(([label, c]) => (
-                    <div key={label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <div style={{ width: 7, height: 7, borderRadius: "50%", background: c, flexShrink: 0 }} />
-                        <span style={{ fontFamily: "'Instrument Sans', sans-serif", fontSize: 11, color: C.inkMuted }}>
-                            {label}
-                        </span>
-                    </div>
-                ))}
-            </div>
         </div>
     );
 }

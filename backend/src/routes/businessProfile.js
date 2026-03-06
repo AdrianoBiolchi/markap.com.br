@@ -59,8 +59,13 @@ async function handleUpsert(req, res) {
         pricingMode,
         segment,
         customMarketMargin,
+        customMarginGoal,
         monthlyProfitGoal,
-        monthlyRevenueGoal
+        monthlyRevenueGoal,
+        taxRate,
+        cardFee,
+        commission,
+        marketplaceFee
     } = req.body;
 
     try {
@@ -91,9 +96,15 @@ async function handleUpsert(req, res) {
             fixedCostPercentage,
             segment: segment || 'outro',
             customMarketMargin: Number(customMarketMargin) || 0,
+            customMarginGoal: Number(customMarginGoal) || 0,
             monthlyProfitGoal: Number(monthlyProfitGoal) || 0,
             monthlyRevenueGoal: Number(monthlyRevenueGoal) || 0,
+            taxRate: Number(taxRate) || 0,
+            cardFee: Number(cardFee) || 0,
+            commission: Number(commission) || 0,
+            marketplaceFee: Number(marketplaceFee) || 0,
         };
+
 
         const profile = await prisma.businessProfile.upsert({
             where: { userId },

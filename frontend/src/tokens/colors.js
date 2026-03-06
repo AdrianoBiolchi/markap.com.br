@@ -14,6 +14,7 @@ export const C = {
     white: '#FFFFFF',
     paper: '#F7F7F7',   // background geral de páginas
     paperWarm: '#F4F3EF',   // fundo de cards
+    paperDeep: '#E8E7E3',   // fundo de elementos internos de cards
     border: '#E2E8F0',   // bordas de inputs e cards
 
     // Acentos

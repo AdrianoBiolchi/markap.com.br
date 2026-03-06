@@ -15,6 +15,7 @@ model User {
   plan         Plan      @default(FREE)
   businessType String?
   taxRegime    String?
+  onboardingGoal String?
   onboarded    Boolean   @default(false)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
@@ -55,6 +56,14 @@ model BusinessProfile {
   
   // Customizações de Benchmarking
   customMarketMargin    Float?   @default(0) // Margem de referência do usuário
+  customMarginGoal      Float?   @default(0) // Meta de margem líquida pessoal
+
+  // Deduções Variáveis (Globais para o modo Simple)
+  taxRate               Float    @default(0) // Impostos (Ex: Simples Nacional)
+  cardFee               Float    @default(0) // Taxa de Cartão
+  commission            Float    @default(0) // Comissão
+  marketplaceFee        Float    @default(0) // Marketplace / Outras taxas variáveis (ex: frete percentual)
+
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
