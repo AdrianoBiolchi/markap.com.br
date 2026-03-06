@@ -356,9 +356,14 @@ export default function Dashboard() {
                                 justifyContent: "space-between",
                                 alignItems: "center",
                             }}>
-                                <span style={{ fontSize: 10, color: C.inkMuted, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
-                                    {SEGMENT_BENCHMARKS[businessProfile.segment].icon} {SEGMENT_BENCHMARKS[businessProfile.segment].label}
-                                </span>
+                                <a
+                                    href={SEGMENT_BENCHMARKS[businessProfile.segment].infoUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{ fontSize: 10, color: C.inkMuted, fontFamily: "'Plus Jakarta Sans',sans-serif", textDecoration: "none" }}
+                                >
+                                    {SEGMENT_BENCHMARKS[businessProfile.segment].icon} {SEGMENT_BENCHMARKS[businessProfile.segment].label} ↗
+                                </a>
                                 <span style={{ fontSize: 10, color: C.greenMid, fontWeight: 700, fontFamily: "'DM Mono',monospace" }}>
                                     {businessProfile.customMarketMargin > 0
                                         ? `meta custom ${businessProfile.customMarketMargin}%`

@@ -6,7 +6,8 @@ export const SEGMENT_BENCHMARKS = {
         label: "Alimentação e Bebidas",
         icon: "🍽️",
         source: "Sebrae 2025",
-        thresholds: { risco: 18, atencao: 28 },   // Ajustado para 2025 (+custos operacionais)
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/evite-o-desperdicio-e-gere-lucro-para-seu-bar-ou-restaurante,b1ba86c19a060810VgnVCM100000d701210aRCRD",
+        thresholds: { risco: 18, atencao: 28 },
         marketAvg: 32,
         description: "Restaurantes, lanchonetes, confeitarias, delivery"
     },
@@ -14,6 +15,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Vestuário e Moda",
         icon: "👗",
         source: "Sebrae 2025",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/como-calcular-a-margem-de-lucro-no-varejo-de-roupas,8aab338f65017810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 35, atencao: 55 },
         marketAvg: 60,
         description: "Roupas, acessórios, calçados, artesanato têxtil"
@@ -22,6 +24,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Artesanato e Presentes",
         icon: "🎨",
         source: "Sebrae / ABRAFAR 2025",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/saiba-como-definir-a-margem-de-lucro,e361fcbf64756810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 30, atencao: 45 },
         marketAvg: 52,
         description: "Peças artesanais, decoração, lembranças, bijuterias"
@@ -30,6 +33,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Beleza e Estética",
         icon: "💅",
         source: "Sebrae 2025",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/saiba-como-definir-a-margem-de-lucro,e361fcbf64756810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 45, atencao: 58 },
         marketAvg: 65,
         description: "Salões, barbearias, estética, manicure"
@@ -38,6 +42,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Serviços Gerais",
         icon: "🔧",
         source: "Sebrae 2024",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/saiba-como-definir-a-margem-de-lucro,e361fcbf64756810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 25, atencao: 38 },
         marketAvg: 45,
         description: "Consertos, manutenção, consultoria, freelance"
@@ -46,6 +51,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Tecnologia e Software",
         icon: "💻",
         source: "Sebrae / ABES 2025",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/saiba-como-definir-a-margem-de-lucro,e361fcbf64756810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 35, atencao: 55 },
         marketAvg: 65,
         description: "Desenvolvimento, suporte técnico, design digital"
@@ -54,6 +60,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Comércio e Varejo",
         icon: "🛒",
         source: "CNC / Sebrae 2025",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/como-calcular-a-margem-de-lucro-no-varejo-de-roupas,8aab338f65017810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 12, atencao: 22 },
         marketAvg: 28,
         description: "Revenda, lojas físicas, e-commerce, marketplace"
@@ -62,6 +69,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Saúde e Bem-estar",
         icon: "🏥",
         source: "Sebrae 2025",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/saiba-como-definir-a-margem-de-lucro,e361fcbf64756810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 28, atencao: 42 },
         marketAvg: 55,
         description: "Clínicas, farmácias, suplementos, terapias"
@@ -70,6 +78,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Educação e Cursos",
         icon: "📚",
         source: "Sebrae 2025",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/saiba-como-definir-a-margem-de-lucro,e361fcbf64756810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 35, atencao: 55 },
         marketAvg: 62,
         description: "Cursos online, aulas particulares, treinamentos"
@@ -78,6 +87,7 @@ export const SEGMENT_BENCHMARKS = {
         label: "Outro segmento",
         icon: "📦",
         source: "Sebrae (geral)",
+        infoUrl: "https://sebrae.com.br/sites/PortalSebrae/artigos/saiba-como-definir-a-margem-de-lucro,e361fcbf64756810VgnVCM1000001b00320aRCRD",
         thresholds: { risco: 15, atencao: 25 },
         marketAvg: 30,
         description: "Segmento não listado"

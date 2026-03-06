@@ -437,7 +437,7 @@ export default function BusinessProfile() {
 
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                         {Object.entries(SEGMENT_BENCHMARKS).map(([key, seg]) => (
-                            <button
+                            <div
                                 key={key}
                                 onClick={() => setForm(f => ({ ...f, segment: key }))}
                                 style={{
@@ -454,18 +454,37 @@ export default function BusinessProfile() {
                                 }}
                             >
                                 <span style={{ fontSize: 20 }}>{seg.icon}</span>
-                                <div>
+                                <div style={{ flex: 1 }}>
                                     <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700, fontSize: 13, color: '#0F0E0C' }}>{seg.label}</p>
                                     <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, color: '#9CA3AF', marginTop: 2 }}>
                                         Margem média: <strong style={{ color: '#1A5C3A' }}>{seg.marketAvg}%</strong> · {seg.source}
                                     </p>
+                                    <a
+                                        href={seg.infoUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                        style={{
+                                            fontSize: 9,
+                                            color: '#1A5C3A',
+                                            textDecoration: 'none',
+                                            fontWeight: 700,
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: 3,
+                                            marginTop: 3,
+                                            opacity: 0.8
+                                        }}
+                                    >
+                                        Ler sobre a margem ➔
+                                    </a>
                                 </div>
                                 {form.segment === key && (
-                                    <div style={{ marginLeft: 'auto', width: 18, height: 18, borderRadius: '50%', background: '#1A5C3A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#1A5C3A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                         <span style={{ color: '#FFF176', fontSize: 11 }}>✓</span>
                                     </div>
                                 )}
-                            </button>
+                            </div>
                         ))}
                     </div>
                 </div>
