@@ -4,7 +4,7 @@ import './Landing.css'
 
 export default function Landing() {
   const navigate = useNavigate()
-  
+
   // Redirect se já logado
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -16,7 +16,7 @@ export default function Landing() {
     cost: 45, labor: 15, fixed: 5000,
     revenue: 20000, taxes: 15, margin: 20
   })
-  
+
   // FAQ state
   const [openFaq, setOpenFaq] = useState(0)
 
@@ -24,9 +24,9 @@ export default function Landing() {
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) { 
-          e.target.classList.add('visible'); 
-          obs.unobserve(e.target) 
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target)
         }
       })
     }, { threshold: 0.08 })
@@ -39,7 +39,7 @@ export default function Landing() {
   // Composition bar percentages for the demo result
   const getComposition = () => {
     if (!result) return { dp: 0, fp: 0, tp: 0, lp: 0 };
-    const dp = ( (calc.cost + calc.labor) / result.price) * 100;
+    const dp = ((calc.cost + calc.labor) / result.price) * 100;
     const fp = (calc.fixed / (calc.revenue || 1)) * 100;
     const tp = calc.taxes;
     const lp = Math.max(0, 100 - dp - fp - tp);
@@ -72,14 +72,14 @@ export default function Landing() {
           <div>
             <div className="hero-badge"><span className="badge-dot"></span>Metodologia SEBRAE · Grátis para começar</div>
             <h1 className="hero-h">
-              Você sabe quanto<br />
-              <span className="hl-yellow">lucra de verdade</span><br />
-              em <span className="hl-green">cada venda?</span>
+              Você sabe o <span className="hl-green">lucro real</span><br />
+              que sobra <span className="hl-yellow">no seu bolso</span><br />
+              em cada venda?
             </h1>
-            <p className="hero-sub">A maioria dos empresários precifica no achismo. Resultado: <strong>trabalha muito e no fim do mês não sobra nada.</strong> O Markap mostra em 3 minutos se seus preços estão certos.</p>
+            <p className="hero-sub">Pare de precificar no "achismo" e recupere sua margem de lucro. O Markap usa inteligência financeira para mostrar se seus preços estão certos em apenas 3 minutos.</p>
             <div className="hero-ctas">
               <Link to="/register" className="btn-primary">Calcular meu primeiro produto →</Link>
-              <a href="#como-funciona" className="btn-secondary">Ver como funciona</a>
+              <a href="#demo" className="btn-secondary">Fazer um Teste Drive</a>
             </div>
             <div className="hero-proof">
               <div className="proof-avatars">
@@ -93,102 +93,18 @@ export default function Landing() {
 
           {/* REAL APP MOCKUP */}
           <div className="hero-right">
-            <div className="app-window">
-              <div className="app-nav">
-                <div className="app-logo">Mark<em>ap</em></div>
-                <div className="app-nav-links">
-                  <span className="anl">Dashboard</span>
-                  <span className="anl active">Calculadora</span>
-                  <span className="anl">Meus Produtos</span>
-                </div>
-                <div className="app-nav-cta">+ Novo Cálculo</div>
-              </div>
-
-              <div className="app-body">
-                <div className="app-left">
-                  <div className="app-header">
-                    <div className="app-h-title">Calculadora de Precificação</div>
-                    <div className="app-h-sub">Analise a rentabilidade e encontre o preço ideal.</div>
-                  </div>
-
-                  <div className="app-progress">
-                    <div className="progress-top"><span>Progresso do preenchimento</span><strong>100%</strong></div>
-                    <div className="progress-bar"><div className="progress-fill"></div></div>
-                    <div className="progress-ok">✓ Boa precificação! Seu produto tem margem saudável.</div>
-                  </div>
-
-                  <div className="app-form">
-                    <div className="form-section-title">
-                      <div className="fs-num">✓</div>
-                      <span className="fs-label">Dados do Produto</span>
-                    </div>
-                    <div className="form-grid">
-                      <div className="form-field" style={{ gridColumn: '1/-1' }}>
-                        <span className="field-label">Nome do Produto</span>
-                        <div className="field-input">Bolsa de Couro Artesanal</div>
-                      </div>
-                      <div className="form-field">
-                        <span className="field-label">Custo de Produção</span>
-                        <div className="field-input green-focus">R$ 45,00</div>
-                      </div>
-                      <div className="form-field">
-                        <span className="field-label">Margem Desejada</span>
-                        <div className="field-input">22 %</div>
-                      </div>
-                      <div className="form-field">
-                        <span className="field-label">Despesas Fixas</span>
-                        <div className="field-input">R$ 12,50</div>
-                      </div>
-                      <div className="form-field">
-                        <span className="field-label">Impostos</span>
-                        <div className="field-input">12 %</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="app-right">
-                  <div className="result-main-card">
-                    <div className="rmc-eye">
-                      <span>Preço Sugerido</span>
-                      <span className="rmc-healthy">✓ Saudável</span>
-                    </div>
-                    <div className="rmc-price">R$ 127,90</div>
-                    <div className="rmc-margin">Margem líquida: R$ 38,40 (30%)</div>
-                  </div>
-
-                  <div className="comp-card">
-                    <div className="comp-label">Composição do Preço</div>
-                    <div className="comp-bar">
-                      <div style={{ width: '35%', background: '#FF6B6B' }}></div>
-                      <div style={{ width: '20%', background: '#F59E0B' }}></div>
-                      <div style={{ width: '15%', background: '#8B5CF6' }}></div>
-                      <div style={{ width: '30%', background: '#22C55E' }}></div>
-                    </div>
-                    <div className="comp-legend">
-                      <div className="cl-item"><div className="cl-dot" style={{ background: '#FF6B6B' }}></div>Custos (R$45)</div>
-                      <div className="cl-item"><div className="cl-dot" style={{ background: '#F59E0B' }}></div>Impostos (R$19)</div>
-                      <div className="cl-item"><div className="cl-dot" style={{ background: '#8B5CF6' }}></div>Despesas (R$25)</div>
-                      <div className="cl-item"><div className="cl-dot" style={{ background: '#22C55E' }}></div>Lucro (R$38)</div>
-                    </div>
-                  </div>
-
-                  <div className="be-card">
-                    <div className="be-label">Ponto de Equilíbrio</div>
-                    <div className="be-num">47 <span>unidades/mês</span></div>
-                    <div className="be-sub">Venda mínima para cobrir custos fixos.</div>
-                    <div className="be-bar"><div className="be-dot"></div></div>
-                    <div className="be-labels"><span>PREJUÍZO</span><span>LUCRO</span></div>
-                  </div>
-
-                  <div className="ai-card">
-                    <div className="ai-title">✨ Diagnóstico IA</div>
-                    <div className="ai-item"><span className="ai-icon">↑</span> Seu preço está <strong style={{ color: '#22C55E' }}>5% abaixo</strong> da média. Considere R$135,00.</div>
-                    <div className="ai-item"><span className="ai-icon">💡</span> Reduzir embalagem em R$2 aumentaria o lucro anual em <strong style={{ color: '#22C55E' }}>R$1.200</strong>.</div>
-                    <div className="ai-btn">🔒 Desbloquear dicas PRO</div>
-                  </div>
-                </div>
-              </div>
+            <div className="reveal" style={{
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 30px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.05)',
+              transform: 'perspective(1000px) rotateY(-5deg) rotateX(2deg)',
+              background: '#fff'
+            }}>
+              <img
+                src="/dashboard_original.png"
+                alt="Markap Dashboard Original"
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+              />
             </div>
           </div>
         </div>
@@ -230,8 +146,8 @@ export default function Landing() {
             </div>
           </div>
           <div className="prob-cta reveal">
-            <div className="prob-cta-text">Se você se identificou,<br />o Markap foi <em>feito para você.</em></div>
-            <Link to="/register" className="btn-primary" style={{ flexShrink: 0 }}>Resolver agora →</Link>
+            <div className="prob-cta-text">Se você se identificou,<br />o Markap é a <em>sua nova inteligência.</em></div>
+            <Link to="/register" className="btn-primary" style={{ flexShrink: 0 }}>Recuperar meu lucro agora →</Link>
           </div>
         </div>
       </section>
@@ -277,22 +193,31 @@ export default function Landing() {
             <div className="step reveal">
               <div className="step-ghost">1</div>
               <div className="step-n">// passo 01</div>
-              <h3 className="step-t">Informe os <em>custos</em></h3>
-              <p className="step-p">Custo do produto, mão de obra, embalagem. Os custos fixos ficam no perfil — preenche uma vez para todos os produtos.</p>
+              <div className="step-img-box">
+                <img src="/profile_original.png" alt="Perfil" className="step-img" />
+              </div>
+              <h3 className="step-t">Defina sua <em>Estrutura</em></h3>
+              <p className="step-p">Insira seus custos fixos e faturamento. O sistema calcula automaticamente o peso de cada despesa no seu preço final.</p>
               <span className="step-chip chip-g">~2 minutos</span>
             </div>
             <div className="step reveal">
               <div className="step-ghost">2</div>
               <div className="step-n">// passo 02</div>
-              <h3 className="step-t">Receba o <em>preço ideal</em></h3>
-              <p className="step-p">Calculamos o preço que cobre todos os custos — diretos e fixos — e garante a margem que você definiu querer.</p>
+              <div className="step-img-box">
+                <img src="/precificar_original.png" alt="Precificação" className="step-img" />
+              </div>
+              <h3 className="step-t">Descubra seu <em>Preço de Ouro</em></h3>
+              <p className="step-p">Encontre o equilíbrio perfeito entre ser competitivo e garantir a margem líquida que você sempre sonhou.</p>
               <span className="step-chip chip-y">instantâneo</span>
             </div>
             <div className="step reveal">
               <div className="step-ghost">3</div>
               <div className="step-n">// passo 03</div>
-              <h3 className="step-t">Veja o <em>diagnóstico</em></h3>
-              <p className="step-p">Score de saúde, ponto de equilíbrio, simulador de cenários e alertas automáticos de margem crítica por produto.</p>
+              <div className="step-img-box">
+                <img src="/analysis_original.png" alt="Análise" className="step-img" />
+              </div>
+              <h3 className="step-t">Domine seus <em>Resultados</em></h3>
+              <p className="step-p">Acompanhe seu Score de Saúde e Ponto de Equilíbrio. Tenha o controle total do seu negócio na palma da mão.</p>
               <span className="step-chip chip-b">diagnóstico completo</span>
             </div>
           </div>
@@ -300,69 +225,69 @@ export default function Landing() {
       </section>
 
       {/* DEMO */}
-      <section className="section demo-section">
+      <section className="section demo-section" id="demo">
         <div className="demo-inner">
           <div className="tag-pill tp-green reveal" style={{ background: 'rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.9)', borderColor: 'rgba(255,255,255,0.2)' }}>// demo interativa</div>
-          <h2 className="demo-h reveal">Calcule agora.<br />Sem criar conta.</h2>
-          <p className="demo-sub reveal">Preencha os dados e veja o resultado em tempo real.</p>
+          <h2 className="demo-h reveal">Faça um Teste Drive.<br />Sem compromisso.</h2>
+          <p className="demo-sub reveal">Simule seus preços agora mesmo e veja a mágica acontecer em tempo real.</p>
           <div className="demo-card reveal">
             <div className="demo-topbar">
               <div className="dd" style={{ background: '#FF5F57' }}></div>
               <div className="dd" style={{ background: '#FFBD2E' }}></div>
               <div className="dd" style={{ background: '#28CA41' }}></div>
-              <span className="demo-url">markap.com.br/calculadora</span>
+              <span className="demo-url">markap.com.br/precificar</span>
             </div>
             <div className="demo-grid">
               <div className="demo-left">
                 <label className="il" htmlFor="cost">Custo do produto (R$)</label>
-                <input 
-                  className="ifield" 
-                  type="number" 
-                  id="cost" 
+                <input
+                  className="ifield"
+                  type="number"
+                  id="cost"
                   value={calc.cost}
                   onChange={e => setCalc(prev => ({ ...prev, cost: parseFloat(e.target.value) || 0 }))}
                 />
                 <label className="il" htmlFor="labor">Mão de obra (R$)</label>
-                <input 
-                  className="ifield" 
-                  type="number" 
-                  id="labor" 
+                <input
+                  className="ifield"
+                  type="number"
+                  id="labor"
                   value={calc.labor}
                   onChange={e => setCalc(prev => ({ ...prev, labor: parseFloat(e.target.value) || 0 }))}
                 />
                 <label className="il" htmlFor="fixed">Custos fixos mensais (R$)</label>
-                <input 
-                  className="ifield" 
-                  type="number" 
-                  id="fixed" 
+                <input
+                  className="ifield"
+                  type="number"
+                  id="fixed"
                   value={calc.fixed}
                   onChange={e => setCalc(prev => ({ ...prev, fixed: parseFloat(e.target.value) || 0 }))}
                 />
                 <label className="il" htmlFor="revenue">Faturamento previsto (R$)</label>
-                <input 
-                  className="ifield" 
-                  type="number" 
-                  id="revenue" 
+                <input
+                  className="ifield"
+                  type="number"
+                  id="revenue"
                   value={calc.revenue}
                   onChange={e => setCalc(prev => ({ ...prev, revenue: parseFloat(e.target.value) || 1 }))}
                 />
                 <div className="irow">
                   <div>
                     <label className="il" htmlFor="taxes">Impostos + taxas %</label>
-                    <input 
-                      className="ifield" 
-                      type="number" 
-                      id="taxes" 
+                    <input
+                      className="ifield"
+                      type="number"
+                      id="taxes"
                       value={calc.taxes}
                       onChange={e => setCalc(prev => ({ ...prev, taxes: parseFloat(e.target.value) || 0 }))}
                     />
                   </div>
                   <div>
                     <label className="il" htmlFor="margin">Margem desejada %</label>
-                    <input 
-                      className="ifield" 
-                      type="number" 
-                      id="margin" 
+                    <input
+                      className="ifield"
+                      type="number"
+                      id="margin"
                       value={calc.margin}
                       onChange={e => setCalc(prev => ({ ...prev, margin: parseFloat(e.target.value) || 0 }))}
                     />
@@ -383,15 +308,15 @@ export default function Landing() {
                   <div className="r-mini"><div className="rmv a">{result ? result.markup.toFixed(2) + 'x' : '---'}</div><div className="rml">Markup</div></div>
                 </div>
                 <div className="r-barwrap">
-                   <div style={{ width: `${dp}%`, background: '#3B82F6' }}></div>
-                   <div style={{ width: `${fp}%`, background: '#8B5CF6' }}></div>
-                   <div style={{ width: `${tp}%`, background: '#EAB308' }}></div>
-                   <div style={{ width: `${lp}%`, background: '#22C55E' }}></div>
+                  <div style={{ width: `${dp}%`, background: '#94A3B8' }}></div>
+                  <div style={{ width: `${fp}%`, background: '#64748B' }}></div>
+                  <div style={{ width: `${tp}%`, background: '#3B82F6' }}></div>
+                  <div style={{ width: `${lp}%`, background: '#22C55E' }}></div>
                 </div>
                 <div className="r-barleg">
-                  <div className="bli"><div className="bld" style={{ background: '#3B82F6' }}></div>Custo direto</div>
-                  <div className="bli"><div className="bld" style={{ background: '#8B5CF6' }}></div>Custo fixo</div>
-                  <div className="bli"><div className="bld" style={{ background: '#EAB308' }}></div>Impostos</div>
+                  <div className="bli"><div className="bld" style={{ background: '#94A3B8' }}></div>Custo direto</div>
+                  <div className="bli"><div className="bld" style={{ background: '#64748B' }}></div>Custo fixo</div>
+                  <div className="bli"><div className="bld" style={{ background: '#3B82F6' }}></div>Impostos</div>
                   <div className="bli"><div className="bld" style={{ background: '#22C55E' }}></div>Lucro</div>
                 </div>
                 <Link to="/register" className="btn-demo-cta">Ver diagnóstico completo →</Link>
@@ -484,7 +409,7 @@ export default function Landing() {
         <div className="section-inner-sm">
           <div className="tag-pill tp-coral reveal">❓ Dúvidas</div>
           <h2 className="section-h reveal" style={{ maxWidth: '100%' }}>Perguntas <em>frequentes</em></h2>
-          
+
           {[
             { q: 'O Markap funciona para qualquer negócio?', a: 'Sim. Comércio, artesanato, alimentação, serviços — a metodologia se adapta ao seu regime tributário e tipo de negócio. No cadastro você informa seu segmento e o sistema ajusta automaticamente.' },
             { q: 'É realmente grátis para começar?', a: 'O plano Free é grátis para sempre — sem limite de tempo. Você pode precificar até 5 produtos sem pagar nada. O Pro (R$29/mês) desbloqueia produtos ilimitados e diagnóstico com IA.' },
@@ -531,7 +456,7 @@ export default function Landing() {
               <ul className="ft-links">
                 <li><a href="#como-funciona">Como funciona</a></li>
                 <li><a href="#precos">Preços</a></li>
-                <li><Link to="/register">Calculadora</Link></li>
+                <li><Link to="/register">Engenharia de Preço</Link></li>
               </ul>
             </div>
             <div>

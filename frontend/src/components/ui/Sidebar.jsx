@@ -13,7 +13,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 
 const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-    { icon: Calculator, label: 'Calculadora', path: '/calculator' },
+    { icon: Calculator, label: 'Engenharia de Preço', path: '/precificar' },
     { icon: Store, label: 'Perfil do Negócio', path: '/business-profile' },
     { icon: TrendingUp, label: 'Análise (Beta)', path: '/analysis' },
     { icon: Zap, label: 'Fazer Upgrade', path: '/upgrade', highlight: true },

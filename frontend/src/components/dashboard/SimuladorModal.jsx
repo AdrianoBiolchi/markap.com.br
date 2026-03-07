@@ -108,18 +108,18 @@ export default function SimuladorModal({ produto, onClose, onApply, businessProf
 
                     {/* Barra segmentada */}
                     <div style={{ display: "flex", height: 8, borderRadius: 99, overflow: "hidden", gap: 1, marginBottom: 12 }}>
-                        <div style={{ width: `${Math.min(custoPct, 100)}%`, background: C.inkMuted, minWidth: custoPct > 1 ? 3 : 0 }} title="Custo direto" />
-                        <div style={{ width: `${Math.min(taxasPct, 100)}%`, background: C.orange, minWidth: taxasPct > 1 ? 3 : 0 }} title="Taxas e impostos" />
-                        <div style={{ width: `${Math.min(cfPct, 100)}%`, background: "#94A3B8", minWidth: cfPct > 1 ? 3 : 0 }} title="Custo fixo" />
-                        <div style={{ flex: 1, background: mc, minWidth: 3, borderRadius: "0 99px 99px 0" }} title="Margem líquida" />
+                        <div style={{ width: `${Math.min(custoPct, 100)}%`, background: C.costDirect, minWidth: custoPct > 1 ? 3 : 0 }} title="Custo direto" />
+                        <div style={{ width: `${Math.min(taxasPct, 100)}%`, background: C.fees, minWidth: taxasPct > 1 ? 3 : 0 }} title="Taxas e impostos" />
+                        <div style={{ width: `${Math.min(cfPct, 100)}%`, background: C.costFixed, minWidth: cfPct > 1 ? 3 : 0 }} title="Custo fixo" />
+                        <div style={{ flex: 1, background: C.margin, minWidth: 3, borderRadius: "0 99px 99px 0" }} title="Margem líquida" />
                     </div>
 
                     {/* Itens do waterfall */}
                     {[
-                        { label: "Custo direto", valor: custoAbs, pct: custoPct, cor: C.inkMuted, sinal: "-" },
-                        { label: "Taxas e impostos", valor: taxasAbs, pct: taxasPct, cor: C.orange, sinal: "-" },
-                        { label: "Custo fixo (CF%)", valor: cfAbs, pct: cfPct, cor: "#94A3B8", sinal: "-", oculto: cfPercent === 0 },
-                        { label: "Margem líquida", valor: margemAbs, pct: margemPct, cor: mc, sinal: margemAbs >= 0 ? "=" : "=" },
+                        { label: "Custo direto", valor: custoAbs, pct: custoPct, cor: C.costDirect, sinal: "-" },
+                        { label: "Taxas e impostos", valor: taxasAbs, pct: taxasPct, cor: C.fees, sinal: "-" },
+                        { label: "Custo fixo (CF%)", valor: cfAbs, pct: cfPct, cor: C.costFixed, sinal: "-", oculto: cfPercent === 0 },
+                        { label: "Margem líquida", valor: margemAbs, pct: margemPct, cor: C.margin, sinal: margemAbs >= 0 ? "=" : "=" },
                     ].filter(i => !i.oculto).map((item, idx, arr) => (
                         <div
                             key={item.label}

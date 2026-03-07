@@ -41,6 +41,10 @@ model BusinessProfile {
   // Segmento do negócio
   segment               String?  @default("outro")
   
+  // Dados da Empresa
+  companyName           String?
+  companyDoc            String?
+  
   // Faturamento previsto
   expectedMonthlyRevenue Float   @default(0)  // Faturamento total previsto/mês
   

@@ -86,7 +86,13 @@ function CurrencyInput({ label, description, icon, value, onChange }) {
                 />
             </div>
             {description && (
-                <p style={{ fontSize: 11, color: '#9CA3AF', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <p style={{
+                    fontSize: 13,
+                    color: '#475569',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    lineHeight: 1.5,
+                    marginTop: 4
+                }}>
                     {description}
                 </p>
             )}
@@ -247,13 +253,14 @@ export default function BusinessProfile() {
                     <div style={{
                         background: 'rgba(255,255,255,0.08)',
                         border: '1px solid rgba(255,255,255,0.14)',
-                        borderRadius: 12,
-                        padding: '12px 16px',
+                        borderRadius: 14,
+                        padding: '14px 20px',
                         flexShrink: 0,
                         textAlign: 'center',
+                        backdropFilter: 'blur(4px)'
                     }}>
-                        <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>CF% atual</p>
-                        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 28, fontWeight: 500, color: cfPercent > 60 ? '#FF6B6B' : cfPercent > 40 ? '#FFF176' : '#22C55E', lineHeight: 1 }}>
+                        <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 6, fontWeight: 700 }}>CF% atual</p>
+                        <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 32, fontWeight: 500, color: cfPercent > 60 ? '#FF6B6B' : cfPercent > 40 ? '#FFF176' : '#22C55E', lineHeight: 1 }}>
                             {cfPercent.toFixed(1)}%
                         </p>
                     </div>
@@ -263,9 +270,10 @@ export default function BusinessProfile() {
                 <div style={{
                     background: '#FFFFFF',
                     border: '1px solid #E2E8F0',
-                    borderRadius: 20,
-                    padding: '24px',
-                    marginBottom: 20,
+                    borderRadius: 24,
+                    padding: '32px',
+                    marginBottom: 24,
+                    boxShadow: '0 10px 30px -12px rgba(0,0,0,0.05)',
                 }}>
                     <div style={{
                         display: 'flex', alignItems: 'center', gap: 12,
@@ -311,11 +319,12 @@ export default function BusinessProfile() {
                 {/* SEÇÃO 2: Faturamento Previsto */}
                 <div style={{
                     background: '#FFFFFF', border: '1px solid #E2E8F0',
-                    borderRadius: 20, padding: '24px', marginBottom: 20,
+                    borderRadius: 20, padding: '28px', marginBottom: 20,
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.02)'
                 }}>
                     <div style={{
                         display: 'flex', alignItems: 'center', gap: 12,
-                        marginBottom: 24, paddingBottom: 16,
+                        marginBottom: 20, paddingBottom: 16,
                         borderBottom: '2px solid #F0FDF4',
                     }}>
                         <div style={{
@@ -329,28 +338,49 @@ export default function BusinessProfile() {
                         </h3>
                     </div>
 
-                    <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 6 }}>
-                        Quanto você pretende faturar esse mês?
-                    </p>
-                    <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: '#9CA3AF', marginBottom: 14 }}>
-                        Usado para calcular o percentual de custo fixo rateado por produto
-                    </p>
-                    <CurrencyInput icon="💰" value={form.expectedMonthlyRevenue} onChange={set('expectedMonthlyRevenue')} />
-
-                    {form.expectedMonthlyRevenue > 0 && (
-                        <div style={{
-                            background: '#FFFFFF',
-                            border: `1.5px solid ${cfColor}`,
-                            borderRadius: 12, padding: '14px 18px',
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            marginTop: 14,
-                        }}>
-                            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, color: '#374151' }}>{cfLabel}</p>
-                            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 20, fontWeight: 500, color: cfColor, marginLeft: 16 }}>
-                                {cfPercent.toFixed(1)}%
-                            </span>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 32, alignItems: 'start' }}>
+                        <div>
+                            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, fontWeight: 700, color: '#1A5C3A', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                                <span style={{ fontSize: 18 }}>💡</span> Cálculo do Preço (Rateio)
+                            </p>
+                            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, color: '#475569', lineHeight: 1.6, margin: 0 }}>
+                                O <strong>Faturamento Previsto</strong> é o que você fatura HOJE (ou espera faturar no próximo mês).
+                            </p>
+                            <div style={{ marginTop: 12, padding: '10px 14px', background: '#F0FDF4', borderRadius: 10, borderLeft: '3px solid #1A5C3A' }}>
+                                <p style={{ fontSize: 11, color: '#166534', fontWeight: 600, margin: '0 0 4px 0' }}>
+                                    Para que serve?
+                                </p>
+                                <p style={{ fontSize: 11, color: '#166534', margin: 0, lineHeight: 1.4 }}>
+                                    Ele define o peso do seu aluguel e luz em cada produto. Se este valor for realista, seu preço cobrirá todas as contas.
+                                </p>
+                            </div>
                         </div>
-                    )}
+
+                        <div style={{ background: '#F0FDF4', padding: 20, borderRadius: 16, border: '1px solid #DCFCE7' }}>
+                            <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, fontWeight: 700, color: '#166534', marginBottom: 12, display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                Valor mensal esperado (R$)
+                            </label>
+                            <CurrencyInput icon="💰" value={form.expectedMonthlyRevenue} onChange={set('expectedMonthlyRevenue')} />
+
+                            {form.expectedMonthlyRevenue > 0 && (
+                                <div style={{
+                                    background: '#FFFFFF',
+                                    border: `1.5px solid ${cfColor}`,
+                                    borderRadius: 12, padding: '12px 14px',
+                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                    marginTop: 16,
+                                }}>
+                                    <div>
+                                        <p style={{ fontSize: 10, color: '#9CA3AF', textTransform: 'uppercase', fontWeight: 700, marginBottom: 2 }}>Incidência de CF</p>
+                                        <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: '#374151', margin: 0, fontWeight: 600 }}>{cfPercent > 40 ? '⚠️ Alerta de peso alto' : '✅ Peso saudável'}</p>
+                                    </div>
+                                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: 20, fontWeight: 600, color: cfColor }}>
+                                        {cfPercent.toFixed(1)}%
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
                 {/* SEÇÃO 3: Deduções Variáveis (Globais) */}
@@ -478,7 +508,7 @@ export default function BusinessProfile() {
                         <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#1A5C3A', color: '#FFF176', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 14 }}>5</div>
                         <div>
                             <h3 style={{ fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 20, color: '#0F0E0C', letterSpacing: '-0.02em' }}>Segmento do Negócio</h3>
-                            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: '#9CA3AF', marginTop: 2 }}>
+                            <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, color: '#64748B', marginTop: 4 }}>
                                 Define as margens de referência do seu mercado — fonte: Sebrae
                             </p>
                         </div>
@@ -494,12 +524,25 @@ export default function BusinessProfile() {
                                     padding: '14px 16px',
                                     background: form.segment === key ? '#DCFCE7' : '#FFFFFF',
                                     border: `1.5px solid ${form.segment === key ? '#1A5C3A' : '#E2E8F0'}`,
-                                    borderRadius: 12,
+                                    borderRadius: 14,
                                     cursor: 'pointer',
-                                    transition: 'all 0.15s ease',
+                                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: 10,
+                                    gap: 12,
+                                    boxShadow: form.segment === key ? '0 8px 20px -6px rgba(26,92,58,0.15)' : 'none',
+                                }}
+                                onMouseEnter={e => {
+                                    if (form.segment !== key) {
+                                        e.currentTarget.style.borderColor = '#1A5C3A';
+                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                    }
+                                }}
+                                onMouseLeave={e => {
+                                    if (form.segment !== key) {
+                                        e.currentTarget.style.borderColor = '#E2E8F0';
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                    }
                                 }}
                             >
                                 <span style={{ fontSize: 20 }}>{seg.icon}</span>
@@ -621,18 +664,37 @@ export default function BusinessProfile() {
                             </p>
                         </div>
                     </div>
-                    <div style={{ marginTop: 24 }}>
-                        <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 700, color: '#374151', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                            Meta de Faturamento Mensal (R$)
-                        </p>
-                        <CurrencyInput
-                            icon="💰"
-                            value={form.monthlyRevenueGoal}
-                            onChange={set('monthlyRevenueGoal')}
-                        />
-                        <p style={{ fontSize: 11, color: '#9CA3AF', marginTop: 6, lineHeight: 1.4 }}>
-                            Sua meta de vendas brutas para este mês.
-                        </p>
+                    <div style={{ marginTop: 32, paddingTop: 24, borderTop: '1px solid #1A5C3A', background: 'rgba(26, 92, 58, 0.02)', borderRadius: 16, padding: '24px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 32, alignItems: 'center' }}>
+                            <div>
+                                <div style={{ display: 'inline-block', background: '#1A5C3A', color: '#FFF176', fontSize: 10, fontWeight: 800, padding: '4px 8px', borderRadius: 6, marginBottom: 12 }}>FOCO NO DASHBOARD</div>
+                                <h4 style={{ fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 18, color: '#1A5C3A', marginBottom: 8, margin: 0 }}>
+                                    Meta de Faturamento Mensal
+                                </h4>
+                                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, color: '#475569', lineHeight: 1.5, marginTop: 12 }}>
+                                    Diferente do previsto, a <strong>Meta</strong> é onde você quer chegar.
+                                </p>
+                                <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, color: '#64748B', lineHeight: 1.5, marginTop: 8 }}>
+                                    Não usamos este valor para mexer no seu preço, mas sim para monitorar a "Saúde Financeira" no Dashboard. Se você estiver longe da meta, o Markap te avisará.
+                                </p>
+                            </div>
+                            <div style={{ background: '#FFFFFF', padding: '24px', borderRadius: 20, border: '2px dashed #1A5C3A', boxShadow: '0 8px 20px -10px rgba(0,0,0,0.1)' }}>
+                                <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 800, color: '#1A5C3A', marginBottom: 12, display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    Vendas desejadas (R$)
+                                </label>
+                                <CurrencyInput
+                                    icon="🎯"
+                                    value={form.monthlyRevenueGoal}
+                                    onChange={set('monthlyRevenueGoal')}
+                                />
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, background: '#F0FDF4', padding: '8px 12px', borderRadius: 8 }}>
+                                    <span style={{ fontSize: 14 }}>🚀</span>
+                                    <p style={{ fontSize: 10, color: '#166534', margin: 0, fontWeight: 600 }}>
+                                        Define os alertas de desempenho no seu painel principal.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -641,13 +703,27 @@ export default function BusinessProfile() {
                     disabled={saving}
                     style={{
                         width: '100%', background: '#1A5C3A', color: '#FFFFFF',
-                        border: 'none', borderRadius: 14, padding: '18px 24px',
-                        fontSize: 16, fontWeight: 800, fontFamily: "'Fraunces', serif",
+                        border: 'none', borderRadius: 16, padding: '20px 24px',
+                        fontSize: 18, fontWeight: 800, fontFamily: "'Fraunces', serif",
                         cursor: saving ? 'not-allowed' : 'pointer',
-                        opacity: saving ? 0.7 : 1, marginBottom: 12,
+                        opacity: saving ? 0.7 : 1, marginBottom: 32,
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        boxShadow: '0 12px 24px -8px rgba(26,92,58,0.4)',
                     }}
-                    onMouseEnter={e => { if (!saving) e.currentTarget.style.background = '#143d28' }}
-                    onMouseLeave={e => { if (!saving) e.currentTarget.style.background = '#1A5C3A' }}
+                    onMouseEnter={e => {
+                        if (!saving) {
+                            e.currentTarget.style.background = '#143d28';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = '0 15px 30px -10px rgba(26,92,58,0.5)';
+                        }
+                    }}
+                    onMouseLeave={e => {
+                        if (!saving) {
+                            e.currentTarget.style.background = '#1A5C3A';
+                            e.currentTarget.style.transform = 'translateY(0)';
+                            e.currentTarget.style.boxShadow = '0 12px 24px -8px rgba(26,92,58,0.4)';
+                        }
+                    }}
                 >
                     {saving ? 'Salvando...' : 'Salvar configurações →'}
                 </button>

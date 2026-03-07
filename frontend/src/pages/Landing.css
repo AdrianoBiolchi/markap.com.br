@@ -265,6 +265,29 @@ nav {
 .chip-y { background: var(--yellow); color: var(--ink); }
 .chip-b { background: var(--blue-light); color: var(--blue); }
 
+.step-img-box {
+  width: 100%;
+  height: 120px;
+  background: var(--off);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease;
+}
+.step:hover .step-img-box { transform: scale(1.02); }
+.step-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0.9;
+  filter: grayscale(0.1);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.step:hover .step-img { opacity: 1; filter: grayscale(0); }
+
 /* ── DEMO ── */
 .demo-section { background: var(--green); }
 .demo-inner { max-width: 960px; margin: 0 auto; }

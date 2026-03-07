@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 import { Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { PasswordInput } from '../components/ui/PasswordInput';
 
 const C = {
     green: '#1A5C3A',
@@ -34,8 +35,26 @@ export default function Register() {
     const { register, isLoading, error: backendError } = useAuthStore();
     const navigate = useNavigate();
 
+    const [passwordError, setPasswordError] = useState('');
+
+    const validatePassword = (pwd) => {
+        const reqs = [
+            /.{8,}/,
+            /[A-Z]/,
+            /[a-z]/,
+            /[0-9]/,
+            /[^A-Za-z0-9]/
+        ];
+        return reqs.every(regex => regex.test(pwd));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validatePassword(password)) {
+            setPasswordError('A senha cadastrada não é forte o suficiente. Siga as instruções acima.');
+            return;
+        }
+        setPasswordError('');
         const success = await register(email, password, name);
         if (success) navigate('/onboarding');
     };
@@ -134,30 +153,19 @@ export default function Register() {
                             />
                         </div>
 
-                        <div>
-                            <label style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 600, color: C.inkMid, display: 'block', marginBottom: 6 }}>Senha</label>
-                            <div style={{ position: 'relative' }}>
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    required
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    placeholder="••••••••"
-                                    style={{
-                                        width: '100%', padding: '12px 14px', fontSize: 15, color: C.ink, background: C.white, border: `1.5px solid ${C.border}`, borderRadius: 10, outline: 'none', transition: 'all 0.15s'
-                                    }}
-                                    onFocus={e => { e.target.style.borderColor = C.green; e.target.style.boxShadow = `0 0 0 3px rgba(26,92,58,0.12)` }}
-                                    onBlur={e => { e.target.style.borderColor = C.border; e.target.style.boxShadow = 'none' }}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: C.inkMuted }}
-                                >
-                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
+                        <PasswordInput
+                            label="Senha"
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            placeholder="••••••••"
+                        />
+
+                        {passwordError && (
+                            <div style={{ padding: '12px', background: C.redPale, border: `1px solid ${C.redMid}20`, borderRadius: 10, color: C.redMid, fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}>
+                                <AlertCircle size={16} />
+                                <span>{passwordError}</span>
                             </div>
-                        </div>
+                        )}
 
                         {backendError && (
                             <div style={{ padding: '12px', background: C.redPale, border: `1px solid ${C.redMid}20`, borderRadius: 10, color: C.redMid, fontSize: 13, display: 'flex', gap: 8, alignItems: 'center' }}>

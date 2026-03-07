@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import api from '../api'
 import AppShell from '../components/AppShell'
+import { C } from '../tokens/colors'
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -134,11 +135,12 @@ function PctInput({ label, hint, value, onChange }) {
 
 // ─── Componente principal ──────────────────────────────────────────────────
 
-export default function Calculator() {
+export default function PriceEngineering() {
     const navigate = useNavigate()
     const { id } = useParams()
     const [activeTab, setActiveTab] = useState(0)
     const [productName, setProductName] = useState('')
+    const [productCategory, setProductCategory] = useState('')
     const [saving, setSaving] = useState(false)
     const [businessProfile, setBusinessProfile] = useState(null)
     const [activeSeg, setActiveSeg] = useState(null)
@@ -172,18 +174,19 @@ export default function Calculator() {
                     const product = pRes.data.find(p => p.id === id)
                     if (product) {
                         setProductName(product.name)
+                        setProductCategory(product.category || '')
                         setForm({
-                            productionCost: product.productionCost || 0,
-                            laborCost: product.laborCost || 0,
-                            packagingCost: product.packagingCost || 0,
-                            shippingCost: product.shippingCost || 0,
-                            taxRate: product.taxRate || 0,
-                            cardFee: product.cardFee || 0,
-                            marketplaceFee: product.marketplaceFee || 0,
-                            commission: product.commission || 0,
-                            desiredMargin: product.desiredMargin || 30,
+                            productionCost: Number(product.productionCost?.toFixed(2)) || 0,
+                            laborCost: Number(product.laborCost?.toFixed(2)) || 0,
+                            packagingCost: Number(product.packagingCost?.toFixed(2)) || 0,
+                            shippingCost: Number(product.shippingCost?.toFixed(2)) || 0,
+                            taxRate: Number(product.taxRate?.toFixed(2)) || 0,
+                            cardFee: Number(product.cardFee?.toFixed(2)) || 0,
+                            marketplaceFee: Number(product.marketplaceFee?.toFixed(2)) || 0,
+                            commission: Number(product.commission?.toFixed(2)) || 0,
+                            desiredMargin: Number(product.desiredMargin?.toFixed(2)) || 30,
                             expectedVolume: product.expectedVolume || 100,
-                            competitorPrice: product.competitorPrice || 0,
+                            competitorPrice: Number(product.competitorPrice?.toFixed(2)) || 0,
                         })
                     }
                 }
@@ -212,9 +215,10 @@ export default function Calculator() {
     const cfPercent = businessProfile?.fixedCostPercentage || 0
 
     const deductions = cfPercent + effTaxRate + effCardFee + effMarketplaceFee + effCommission + form.desiredMargin
-    const suggestedPrice = deductions < 100 && totalCost > 0
+    const suggestedPriceRaw = deductions < 100 && totalCost > 0
         ? totalCost / (1 - deductions / 100)
         : 0
+    const suggestedPrice = Math.round(suggestedPriceRaw * 100) / 100
 
     const netMargin = suggestedPrice > 0
         ? ((suggestedPrice - totalCost) / suggestedPrice * 100) - (cfPercent + effTaxRate + effCardFee + effMarketplaceFee + effCommission)
@@ -247,6 +251,7 @@ export default function Calculator() {
             const data = {
                 ...form,
                 name: productName,
+                category: productCategory,
                 suggestedPrice,
                 netMargin,
                 healthScore,
@@ -281,7 +286,7 @@ export default function Calculator() {
 
     const segments = suggestedPrice > 0 ? [
         {
-            id: 'cost', pct: totalCost / suggestedPrice * 100, color: '#94A3B8', label: 'Custo direto', amount: totalCost, details: [
+            id: 'cost', pct: totalCost / suggestedPrice * 100, color: C.costDirect, label: 'Custo direto', amount: totalCost, details: [
                 { label: 'Aquisição / Matéria-prima', value: form.productionCost },
                 { label: 'Mão de obra', value: form.laborCost },
                 { label: 'Embalagem', value: form.packagingCost },
@@ -289,24 +294,24 @@ export default function Calculator() {
             ].filter(d => d.value > 0)
         },
         {
-            id: 'fixed', pct: cfPercent, color: '#475569', label: 'Custo fixo', amount: (cfPercent / 100) * suggestedPrice, details: [
+            id: 'fixed', pct: cfPercent, color: C.costFixed, label: 'Custo fixo', amount: (cfPercent / 100) * suggestedPrice, details: [
                 { label: 'Rateio base (Perfil global)', value: (cfPercent / 100) * suggestedPrice }
             ]
         },
         {
-            id: 'tax', pct: effTaxRate, color: '#3B82F6', label: 'Impostos', amount: (effTaxRate / 100) * suggestedPrice, details: [
+            id: 'tax', pct: effTaxRate, color: C.tax, label: 'Impostos', amount: (effTaxRate / 100) * suggestedPrice, details: [
                 { label: 'Imposto Geral', value: (effTaxRate / 100) * suggestedPrice }
             ]
         },
         {
-            id: 'fees', pct: effCardFee + effMarketplaceFee + effCommission, color: '#8B5CF6', label: 'Taxas', amount: ((effCardFee + effMarketplaceFee + effCommission) / 100) * suggestedPrice, details: [
+            id: 'fees', pct: effCardFee + effMarketplaceFee + effCommission, color: C.fees, label: 'Taxas', amount: ((effCardFee + effMarketplaceFee + effCommission) / 100) * suggestedPrice, details: [
                 { label: 'Taxa do cartão', value: (effCardFee / 100) * suggestedPrice },
                 { label: 'Marketplace', value: (effMarketplaceFee / 100) * suggestedPrice },
                 { label: 'Comissão', value: (effCommission / 100) * suggestedPrice }
             ].filter(d => d.value > 0)
         },
         {
-            id: 'margin', pct: form.desiredMargin, color: '#22C55E', label: 'Margem', amount: (form.desiredMargin / 100) * suggestedPrice, details: [
+            id: 'margin', pct: form.desiredMargin, color: C.margin, label: 'Margem', amount: (form.desiredMargin / 100) * suggestedPrice, details: [
                 { label: 'Lucro Líquido Esperado', value: (form.desiredMargin / 100) * suggestedPrice }
             ]
         },
@@ -367,9 +372,13 @@ export default function Calculator() {
                         boxShadow: '0 12px 32px rgba(0,0,0,0.03)',
                         border: '1px solid #E2E8F0'
                     }}>
-                        {/* Nome do produto */}
+                        {/* Nome do produto e Engenharia de Preço */}
                         <div style={{ marginBottom: 40 }}>
-                            <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1A5C3A', marginBottom: 12 }}>Cadastro de Produto</p>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                                <span style={{ background: '#F0FDF4', color: '#1A5C3A', padding: '4px 10px', borderRadius: 6, fontSize: 10, fontWeight: 800, letterSpacing: '0.05em' }}>PREÇO E MARGEM</span>
+                                <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748B', margin: 0 }}>Engenharia de Preço</p>
+                            </div>
+
                             <input
                                 type="text"
                                 value={productName}
@@ -377,11 +386,31 @@ export default function Calculator() {
                                 placeholder="Nome do produto ou serviço..."
                                 style={{
                                     width: '100%', border: 'none', outline: 'none', background: 'transparent',
-                                    fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 32, letterSpacing: '-0.02em',
-                                    color: productName ? '#0F0E0C' : '#D1D5DB',
+                                    fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 36, letterSpacing: '-0.02em',
+                                    color: productName ? '#0F0E0C' : '#CBD5E1',
+                                    marginBottom: 12
                                 }}
                             />
-                            <div style={{ height: 2, background: '#F0FDF4', marginTop: 16, width: '100%' }} />
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <input
+                                    type="text"
+                                    value={productCategory}
+                                    onChange={e => setProductCategory(e.target.value)}
+                                    placeholder="Adicione uma breve descrição ou categoria (ex: Coleção de Verão)"
+                                    style={{
+                                        flex: 1, border: 'none', outline: 'none', background: 'transparent',
+                                        fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: '#64748B',
+                                        padding: '4px 0'
+                                    }}
+                                />
+                            </div>
+
+                            <p style={{ fontSize: 13, color: '#94A3B8', marginTop: 16, lineHeight: 1.5, maxWidth: '600px' }}>
+                                A <strong>Engenharia de Preço</strong> combina seus custos reais com impostos e taxas para encontrar o valor ideal de venda que garante sua margem de lucro.
+                            </p>
+
+                            <div style={{ height: 1, background: '#E2E8F0', marginTop: 24, width: '100%' }} />
                         </div>
 
                         {/* Abas estilo Switch */}

@@ -146,6 +146,18 @@ router.put('/:id', auth, async (req, res) => {
     }
 });
 
+router.delete('/reset', auth, async (req, res) => {
+    try {
+        await prisma.product.deleteMany({
+            where: { userId: req.user.id }
+        });
+        res.json({ success: true, message: 'All products removed' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 // Delete product
 router.delete('/:id', auth, async (req, res) => {
     const { id } = req.params;

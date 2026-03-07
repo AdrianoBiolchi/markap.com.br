@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
 import Dashboard from './pages/Dashboard';
-import Calculator from './pages/Calculator';
+import PriceEngineering from './pages/PriceEngineering';
 import Onboarding from './pages/Onboarding';
 import Analysis from './pages/Analysis';
 import Upgrade from './pages/Upgrade';
@@ -51,8 +51,8 @@ export default function App() {
 
       {/* ── APP — todas com AppShell (envolvido dentro das próprias telas) ── */}
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/calculator" element={<Calculator />} />
-      <Route path="/calculator/:id" element={<Calculator />} />
+      <Route path="/precificar" element={<PriceEngineering />} />
+      <Route path="/precificar/:id" element={<PriceEngineering />} />
       <Route path="/analysis" element={<Analysis />} />
       <Route path="/analysis/:id" element={<Analysis />} />
       <Route path="/upgrade" element={<Upgrade />} />

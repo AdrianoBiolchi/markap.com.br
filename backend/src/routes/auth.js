@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import prisma from '../config/prisma.js';
+import auth from '../middleware/auth.js';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -193,6 +194,57 @@ router.post('/reset-password', async (req, res) => {
 
         res.json({ success: true });
     } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+router.put('/profile', auth, async (req, res) => {
+    const { name } = req.body;
+    try {
+        if (!name || name.trim() === '') {
+            return res.status(400).json({ error: 'Name is required' });
+        }
+        await prisma.user.update({
+            where: { id: req.user.id },
+            data: { name }
+        });
+        res.json({ success: true, name });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+router.put('/password', auth, async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    try {
+        const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) return res.status(400).json({ error: 'Senha atual incorreta' });
+
+        const hashed = await bcrypt.hash(newPassword, 10);
+        await prisma.user.update({
+            where: { id: req.user.id },
+            data: { password: hashed }
+        });
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+router.delete('/account', auth, async (req, res) => {
+    try {
+        await prisma.user.delete({
+            where: { id: req.user.id }
+        });
+        res.json({ success: true, message: 'Account deleted' });
+    } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Server error' });
     }
 });

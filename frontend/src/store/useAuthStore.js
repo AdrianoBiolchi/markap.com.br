@@ -39,8 +39,7 @@ export const useAuthStore = create((set) => ({
     },
 
     logout: () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        localStorage.clear();
         set({ user: null, isAuth: false, hasCompletedOnboarding: false });
     },
 
@@ -68,4 +67,12 @@ export const useAuthStore = create((set) => ({
             console.error('Error completing onboarding', err);
         }
     },
+
+    updateUser: (newData) => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) return;
+        const updatedUser = { ...user, ...newData };
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        set({ user: updatedUser });
+    }
 }));

@@ -5,10 +5,10 @@ import { C } from "../../tokens/colors";
  * Campo numérico premium que suporta vírgula, mantém foco e estados transitórios (como vazio ou só vírgula).
  */
 export function NumericField({ label, value, onChange, prefix, suffix, style, disabled }) {
-    const [localValue, setLocalValue] = useState(value === 0 ? "" : value.toString().replace(".", ","));
+    const [localValue, setLocalValue] = useState(value === 0 ? "" : (Math.round(value * 100) / 100).toString().replace(".", ","));
 
     useEffect(() => {
-        const valStr = value === 0 ? "" : value.toString().replace(".", ",");
+        const valStr = value === 0 ? "" : (Math.round(value * 100) / 100).toString().replace(".", ",");
         if (parseFloat(localValue.replace(",", ".")) !== value) {
             setLocalValue(valStr);
         }

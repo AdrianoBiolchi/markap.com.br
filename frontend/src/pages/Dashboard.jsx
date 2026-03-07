@@ -121,17 +121,17 @@ export default function Dashboard() {
         const isSimple = businessProfile?.pricingMode === 'SIMPLE';
         setEditando(p);
         setEditForm({
-            suggestedPrice: p.preco || 0,
+            suggestedPrice: Number(p.preco?.toFixed(2)) || 0,
             expectedVolume: p.expectedVolume || 20,
-            productionCost: p.productionCost || 0,
-            laborCost: p.laborCost || 0,
-            packagingCost: p.packagingCost || 0,
-            shippingCost: p.shippingCost || 0,
+            productionCost: Number(p.productionCost?.toFixed(2)) || 0,
+            laborCost: Number(p.laborCost?.toFixed(2)) || 0,
+            packagingCost: Number(p.packagingCost?.toFixed(2)) || 0,
+            shippingCost: Number(p.shippingCost?.toFixed(2)) || 0,
             // Se for Simples, usamos os valores do perfil, senão os do produto
-            taxRate: isSimple ? (businessProfile.taxRate || 0) : (p.taxRate || 0),
-            cardFee: isSimple ? (businessProfile.cardFee || 0) : (p.cardFee || 0),
-            commission: isSimple ? (businessProfile.commission || 0) : (p.commission || 0),
-            marketplaceFee: isSimple ? (businessProfile.marketplaceFee || 0) : (p.marketplaceFee || 0),
+            taxRate: isSimple ? Number(businessProfile.taxRate?.toFixed(2) || 0) : Number(p.taxRate?.toFixed(2) || 0),
+            cardFee: isSimple ? Number(businessProfile.cardFee?.toFixed(2) || 0) : Number(p.cardFee?.toFixed(2) || 0),
+            commission: isSimple ? Number(businessProfile.commission?.toFixed(2) || 0) : Number(p.commission?.toFixed(2) || 0),
+            marketplaceFee: isSimple ? Number(businessProfile.marketplaceFee?.toFixed(2) || 0) : Number(p.marketplaceFee?.toFixed(2) || 0),
         });
     };
 
@@ -257,10 +257,21 @@ export default function Dashboard() {
                 {produtos.filter(p => p.status !== "ok").length} produto(s) com margem abaixo do ideal
             </span>
             <button
-                onClick={() => setAlertaDismissed(true)}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    const el = document.getElementById("meus-produtos");
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
                 style={{ background: C.ink, color: C.yellow, borderRadius: 5, padding: "1px 7px", fontSize: 9, fontWeight: 700, border: "none", cursor: "pointer" }}
             >
                 Ver →
+            </button>
+            <button
+                onClick={(e) => { e.stopPropagation(); setAlertaDismissed(true); }}
+                style={{ background: 'transparent', color: C.inkMuted, fontSize: 10, border: 'none', cursor: 'pointer', padding: '0 4px', fontWeight: 800 }}
+                title="Ignorar alerta"
+            >
+                ×
             </button>
         </div>
     );
@@ -286,14 +297,14 @@ export default function Dashboard() {
                         Nenhum produto ainda
                     </h2>
                     <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, color: C.inkLight, maxWidth: 380, lineHeight: 1.65 }}>
-                        Cadastre seu primeiro produto na calculadora e veja a saúde dos seus preços em tempo real.
+                        Dê o primeiro passo na sua <strong>Engenharia de Preço</strong> e veja a saúde dos seus lucros em tempo real.
                     </p>
                 </div>
                 <button
-                    onClick={() => navigate("/calculator")}
+                    onClick={() => navigate("/precificar")}
                     style={{ background: C.green, color: C.white, border: "none", borderRadius: 12, padding: "14px 28px", fontFamily: "'Fraunces', serif", fontWeight: 800, fontSize: 15, cursor: "pointer" }}
                 >
-                    Calcular meu primeiro produto →
+                    Iniciar Engenharia de Preço →
                 </button>
                 {!businessProfile?.fixedCostPercentage && (
                     <button
@@ -392,7 +403,7 @@ export default function Dashboard() {
                     <button className="mk-btn" onClick={() => navigate("/business-profile")} style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 9, padding: "8px 14px", fontSize: 12, fontWeight: 500, color: C.inkLight }}>
                         Meu perfil
                     </button>
-                    <button className="mk-btn" onClick={() => navigate("/calculator")} style={{ background: C.green, borderRadius: 9, padding: "8px 16px", fontSize: 12, fontWeight: 700, color: C.paper }}>
+                    <button className="mk-btn" onClick={() => navigate("/precificar")} style={{ background: C.green, borderRadius: 9, padding: "8px 16px", fontSize: 12, fontWeight: 700, color: C.paper }}>
                         + Novo produto
                     </button>
                 </div>
@@ -476,7 +487,7 @@ export default function Dashboard() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
                     {/* Lista de produtos — redesenhada com waterfall inline */}
-                    <div className="mk-a3" style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 20, padding: "22px" }}>
+                    <div id="meus-produtos" className="mk-a3" style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 20, padding: "22px" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
                             <div>
                                 <h2 style={{ fontFamily: "'Fraunces',serif", fontSize: 18, fontWeight: 700, color: C.ink, letterSpacing: "-0.01em" }}>Meus Produtos</h2>
@@ -491,7 +502,7 @@ export default function Dashboard() {
                             </div>
                             <button
                                 className="mk-btn"
-                                onClick={() => navigate("/calculator")}
+                                onClick={() => navigate("/precificar")}
                                 style={{ background: C.green, color: C.white, borderRadius: 10, padding: "8px 14px", fontSize: 12, fontWeight: 700, flexShrink: 0 }}
                             >
                                 + Novo produto
@@ -551,19 +562,19 @@ export default function Dashboard() {
                                         <div>
                                             {/* Barra segmentada */}
                                             <div style={{ display: "flex", height: 6, borderRadius: 99, overflow: "hidden", gap: 1, marginBottom: 7 }}>
-                                                <div style={{ width: `${Math.min(custoPct, 100)}%`, background: C.inkMuted, borderRadius: "99px 0 0 99px", minWidth: custoPct > 1 ? 2 : 0 }} title={`Custo: ${custoPct.toFixed(0)}%`} />
-                                                <div style={{ width: `${Math.min(taxasPct, 100 - custoPct)}%`, background: C.orange, minWidth: taxasPct > 1 ? 2 : 0 }} title={`Taxas: ${taxasPct.toFixed(0)}%`} />
-                                                <div style={{ width: `${Math.min(cfPct, 100 - custoPct - taxasPct)}%`, background: "#94A3B8", minWidth: cfPct > 1 ? 2 : 0 }} title={`CF: ${cfPct.toFixed(0)}%`} />
-                                                <div style={{ flex: 1, background: bc, minWidth: 2, borderRadius: "0 99px 99px 0" }} title={`Margem: ${p.margem.toFixed(1)}%`} />
+                                                <div style={{ width: `${Math.min(custoPct, 100)}%`, background: C.costDirect, borderRadius: "99px 0 0 99px", minWidth: custoPct > 1 ? 2 : 0 }} title={`Custo: ${custoPct.toFixed(0)}%`} />
+                                                <div style={{ width: `${Math.min(taxasPct, 100 - custoPct)}%`, background: C.fees, minWidth: taxasPct > 1 ? 2 : 0 }} title={`Taxas: ${taxasPct.toFixed(0)}%`} />
+                                                <div style={{ width: `${Math.min(cfPct, 100 - custoPct - taxasPct)}%`, background: C.costFixed, minWidth: cfPct > 1 ? 2 : 0 }} title={`CF: ${cfPct.toFixed(0)}%`} />
+                                                <div style={{ flex: 1, background: C.margin, minWidth: 2, borderRadius: "0 99px 99px 0" }} title={`Margem: ${p.margem.toFixed(1)}%`} />
                                             </div>
                                             {/* Legenda + margem vs meta */}
                                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                                 <div style={{ display: "flex", gap: 10 }}>
                                                     {[
-                                                        { l: "Custo", pct: custoPct, c: C.inkMuted },
-                                                        { l: "Taxas", pct: taxasPct, c: C.orange },
-                                                        { l: "CF%", pct: cfPct, c: "#94A3B8" },
-                                                        { l: "Margem", pct: margemPct, c: bc },
+                                                        { l: "Custo", pct: custoPct, c: C.costDirect },
+                                                        { l: "Taxas", pct: taxasPct, c: C.fees },
+                                                        { l: "CF%", pct: cfPct, c: C.costFixed },
+                                                        { l: "Margem", pct: margemPct, c: C.margin },
                                                     ].filter(f => f.pct > 0.5).map(f => (
                                                         <span key={f.l} style={{ fontSize: 9, color: C.inkMuted, display: "flex", alignItems: "center", gap: 3 }}>
                                                             <span style={{ width: 6, height: 6, borderRadius: 2, background: f.c, display: "inline-block" }} />

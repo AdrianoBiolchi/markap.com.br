@@ -27,4 +27,12 @@ export const C = {
     redPale: '#FEF2F2',
     orange: '#F59E0B',
     orangePale: '#FFFBEB',
+
+    // Estrutura (Custos, Taxas, Margem)
+    costDirect: '#94A3B8',  // Cinza médio para custos diretos
+    costFixed: '#64748B',   // Cinza escuro para custos fixos
+    tax: '#3B82F6',         // Azul para impostos
+    fees: '#8B5CF6',        // Roxo para taxas (cartão, comissão)
+    margin: '#22C55E',      // Verde para margem de lucro
 }
+
